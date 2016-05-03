@@ -3,6 +3,10 @@ package sfml
 //#include <SFML/Window.h>
 import "C"
 
+import (
+	"runtime"
+)
+
 // Window styles
 type WindowStyle uint
 
@@ -36,6 +40,10 @@ type Window struct {
 	data *C.sfWindow
 }
 
+func destroyWindow(w *C.sfWindow) {
+	C.sfWindow_destroy(w)
+}
+
 func CreateWindow(mode *VideoMode, title string, style WindowStyle, settings *ContextSettings) *Window {
 	var cs C.sfContextSettings
 	cs.depthBits = C.uint(settings.DepthBits)
@@ -44,6 +52,31 @@ func CreateWindow(mode *VideoMode, title string, style WindowStyle, settings *Co
 	cs.majorVersion = C.uint(settings.MajorVersion)
 	cs.minorVersion = C.uint(settings.MinorVersion)
 	cs.attributeFlags = C.sfUint32(settings.AttributeFlags)
-	w := C.sfWindow_createUnicode(CVideoMode(mode), utf32(title), C.sfUint32(style), &cs)
+	w := C.sfWindow_createUnicode(cVideoMode(mode), utf32(title), C.sfUint32(style), &cs)
+	runtime.SetFinalizer(w, destroyWindow)
 	return &Window{w}
+}
+
+func (w *Window) Close() {
+	C.sfWindow_close(w.data)
+}
+
+func (w *Window) IsOpen() bool {
+	return goBool(C.sfWindow_isOpen(w.data))
+}
+
+func (w *Window) GetSettings() *ContextSettings {
+	cs := new(ContextSettings)
+	ccs := C.sfWindow_getSettings(w.data)
+	cs.DepthBits = uint(ccs.depthBits)
+	cs.StencilBits = uint(ccs.stencilBits)
+	cs.AntialiasingLevel = uint(ccs.antialiasingLevel)
+	cs.MajorVersion = uint(ccs.majorVersion)
+	cs.MinorVersion = uint(ccs.minorVersion)
+	cs.AttributeFlags = uint(ccs.attributeFlags)
+	return cs
+}
+
+func (w *Window) PollEvent() *Event {
+	
 }

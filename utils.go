@@ -15,7 +15,7 @@ func utf32(s string) *C.sfUint32 {
 	return &s32[0]
 }
 
-func GoVideoMode(vm C.sfVideoMode) *VideoMode {
+func goVideoMode(vm C.sfVideoMode) *VideoMode {
 	govm := new(VideoMode)
 	govm.Width = uint(vm.width)
 	govm.Height = uint(vm.height)
@@ -23,7 +23,7 @@ func GoVideoMode(vm C.sfVideoMode) *VideoMode {
 	return govm
 }
 
-func CVideoMode(vm *VideoMode) C.sfVideoMode {
+func cVideoMode(vm *VideoMode) C.sfVideoMode {
 	var cvm C.sfVideoMode
 	cvm.width = C.uint(vm.Width)
 	cvm.height = C.uint(vm.Height)
@@ -31,14 +31,14 @@ func CVideoMode(vm *VideoMode) C.sfVideoMode {
 	return cvm
 }
 
-func CBool(b bool) C.sfBool {
+func cBool(b bool) C.sfBool {
 	if b {
 		return C.sfTrue
 	}
 	return C.sfFalse
 }
 
-func GoBool(b C.sfBool) bool {
+func goBool(b C.sfBool) bool {
 	if b == C.sfTrue {
 		return true
 	}

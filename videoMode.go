@@ -12,7 +12,7 @@ type VideoMode struct {
 
 func GetDesktopMode() *VideoMode {
 	vm := C.sfVideoMode_getDesktopMode()
-	return GoVideoMode(vm)
+	return goVideoMode(vm)
 }
 
 func GetFullscreenModes() []*VideoMode {
@@ -20,11 +20,11 @@ func GetFullscreenModes() []*VideoMode {
 	modes := C.sfVideoMode_getFullscreenModes(&count)
 	vms := make([]*VideoMode, count)
 	for i := 0; i < int(count); i++ {
-		vms = append(vms, GoVideoMode(C.GetVideoModeAtIndex(modes, C.int(i))))
+		vms = append(vms, goVideoMode(C.GetVideoModeAtIndex(modes, C.int(i))))
 	}
 	return vms
 }
 
 func (v *VideoMode) IsValid() bool {
-	return GoBool(C.sfVideoMode_isValid(CVideoMode(v)))
+	return goBool(C.sfVideoMode_isValid(cVideoMode(v)))
 }
