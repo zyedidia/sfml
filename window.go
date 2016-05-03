@@ -11,19 +11,19 @@ import (
 type WindowStyle uint
 
 const (
-	None        WindowStyle = C.sfNone
-	Titlebar                = C.sfTitlebar
-	Resize                  = C.sfResize
-	Close                   = C.sfClose
-	Fullscreen              = C.sfFullscreen
-	DefaultStye             = C.sfDefaultStyle
+	StyleNone        WindowStyle = C.sfNone
+	StyleTitlebar    WindowStyle = C.sfTitlebar
+	StyleResize      WindowStyle = C.sfResize
+	StyleClose       WindowStyle = C.sfClose
+	StyleFullscreen  WindowStyle = C.sfFullscreen
+	StyleDefaultStye WindowStyle = C.sfDefaultStyle
 )
 
 // Context attributes
 const (
 	ContextDefault uint = C.sfContextDefault
-	ContextCore         = C.sfContextCore
-	ContextDebug        = C.sfContextDebug
+	ContextCore    uint = C.sfContextCore
+	ContextDebug   uint = C.sfContextDebug
 )
 
 // Context settings
@@ -78,5 +78,5 @@ func (w *Window) GetSettings() *ContextSettings {
 }
 
 func (w *Window) PollEvent() *Event {
-	
+
 }
