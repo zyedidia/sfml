@@ -1,5 +1,4 @@
-#include "_cgo_export.h"
-#include <SFML/Window.h>
+#include <SFML/Window/VideoMode.h>
 
 sfVideoMode GetVideoModeAtIndex(sfVideoMode *modes, int index) {
 	return modes[index];

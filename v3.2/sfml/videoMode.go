@@ -1,7 +1,7 @@
 package sfml
 
 //#include <SFML/Window.h>
-//sfVideoMode GetVideoModeAtIndex(sfVideoMode *modes, int index);
+//#include "videoMode.h"
 import "C"
 
 type VideoMode struct {
@@ -11,8 +11,8 @@ type VideoMode struct {
 }
 
 func GetDesktopMode() *VideoMode {
-	vm := C.sfVideoMode_getDesktopMode()
-	return goVideoMode(vm)
+	v := C.sfVideoMode_getDesktopMode()
+	return goVideoMode(&v)
 }
 
 func GetFullscreenModes() []*VideoMode {
@@ -20,7 +20,8 @@ func GetFullscreenModes() []*VideoMode {
 	modes := C.sfVideoMode_getFullscreenModes(&count)
 	vms := make([]*VideoMode, count)
 	for i := 0; i < int(count); i++ {
-		vms = append(vms, goVideoMode(C.GetVideoModeAtIndex(modes, C.int(i))))
+		v := C.GetVideoModeAtIndex(modes, C.int(i))
+		vms = append(vms, goVideoMode(&v))
 	}
 	return vms
 }
