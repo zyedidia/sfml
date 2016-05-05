@@ -193,6 +193,18 @@ func (w *RenderWindow) Draw(object Drawable, states *RenderStates) {
 	}
 }
 
+/* TODO: Find a good way to convert vertex array
+func (w *RenderWindow) DrawPrimitives(vertices []Vertex, pType PrimitiveType, states *RenderStates) {
+	var r *C.sfRenderStates
+	if states == nil {
+		r = nil
+	} else {
+		t := cRenderStates(states)
+		r = &t
+	}
+	C.sfRenderTexture_drawPrimitives(w.data, (*C.sfVertex)(&vertices[0]), C.size_t(len(vertices)), C.sfPrimitiveType(pType), r)
+}*/
+
 func (w *RenderWindow) PushGLStates() {
 	C.sfRenderWindow_pushGLStates(w.data)
 }

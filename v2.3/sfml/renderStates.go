@@ -21,9 +21,9 @@ func CreateDefaultRenderStates() *RenderStates {
 
 func cRenderStates(r *RenderStates) C.sfRenderStates {
 	return C.sfRenderStates{
-		cBlendMode(&r.BlendMode),
-		cTransform(&r.Transform),
-		r.Texture.data,
-		r.Shader.data,
+		blendMode: cBlendMode(&r.BlendMode),
+		transform: cTransform(&r.Transform),
+		texture:   r.Texture.data,
+		shader:    r.Shader.data,
 	}
 }
