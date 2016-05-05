@@ -56,3 +56,11 @@ func JoystickGetIdentification(joystick uint) *JoystickIdentification {
 func JoystickUpdate() {
 	C.sfJoystick_update()
 }
+
+func goJoystickIdentification(j *C.sfJoystickIdentification) *JoystickIdentification {
+	return &JoystickIdentification{
+		C.GoString(j.name),
+		uint(j.vendorId),
+		uint(j.productId),
+	}
+}

@@ -29,3 +29,19 @@ func GetFullscreenModes() []*VideoMode {
 func (v *VideoMode) IsValid() bool {
 	return goBool(C.sfVideoMode_isValid(cVideoMode(v)))
 }
+
+func goVideoMode(vm *C.sfVideoMode) *VideoMode {
+	return &VideoMode{
+		uint(vm.width),
+		uint(vm.height),
+		uint(vm.bitsPerPixel),
+	}
+}
+
+func cVideoMode(vm *VideoMode) C.sfVideoMode {
+	return C.sfVideoMode{
+		C.uint(vm.Width),
+		C.uint(vm.Height),
+		C.uint(vm.BitsPerPixel),
+	}
+}

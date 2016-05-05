@@ -11,21 +11,29 @@ type RenderWindow struct {
 	data *C.sfRenderWindow
 }
 
-func destroyRenderWindow(w *C.sfRenderWindow) {
-	C.sfRenderWindow_destroy(w)
-}
-
 func CreateRenderWindow(mode *VideoMode, title string, style WindowStyle, settings *ContextSettings) *RenderWindow {
-	cs := cContextSettings(settings)
-	w := C.sfRenderWindow_createUnicode(cVideoMode(mode), cString(title), C.sfUint32(style), &cs)
-	runtime.SetFinalizer(w, destroyRenderWindow)
+	var cs *C.sfContextSettings
+	if settings == nil {
+		cs = nil
+	} else {
+		c := cContextSettings(settings)
+		cs = &c
+	}
+	w := C.sfRenderWindow_createUnicode(cVideoMode(mode), cString(title), C.sfUint32(style), cs)
+	runtime.SetFinalizer(w, C.sfRenderWindow_destroy)
 	return &RenderWindow{w}
 }
 
 func CreateRenderWindowFromHandle(handle WindowHandle, settings *ContextSettings) *RenderWindow {
-	cs := cContextSettings(settings)
-	w := C.sfRenderWindow_createFromHandle(C.sfWindowHandle(handle), &cs)
-	runtime.SetFinalizer(w, destroyWindow)
+	var cs *C.sfContextSettings
+	if settings == nil {
+		cs = nil
+	} else {
+		c := cContextSettings(settings)
+		cs = &c
+	}
+	w := C.sfRenderWindow_createFromHandle(C.sfWindowHandle(handle), cs)
+	runtime.SetFinalizer(w, C.sfRenderWindow_destroy)
 	return &RenderWindow{w}
 }
 
@@ -126,4 +134,77 @@ func (w *RenderWindow) SetJoystickThreshold(treshold float32) {
 
 func (w *RenderWindow) GetSystemHandle() WindowHandle {
 	return WindowHandle(C.sfRenderWindow_getSystemHandle(w.data))
+}
+
+func (w *RenderWindow) Clear(color Color) {
+	C.sfRenderWindow_clear(w.data, cColor(&color))
+}
+
+func (w *RenderWindow) SetView(view *View) {
+	C.sfRenderWindow_setView(w.data, view.data)
+}
+
+func (w *RenderWindow) GetView() *View {
+	return &View{C.sfRenderWindow_getView(w.data)}
+}
+
+func (w *RenderWindow) GetDefaultView() *View {
+	return &View{C.sfRenderWindow_getDefaultView(w.data)}
+}
+
+func (w *RenderWindow) GetViewport(view *View) Recti {
+	r := C.sfRenderWindow_getViewport(w.data, view.data)
+	return *goRecti(&r)
+}
+
+func (w *RenderWindow) MapPixelToCoords(point Vector2i, view *View) Vector2f {
+	r := C.sfRenderWindow_mapPixelToCoords(w.data, cVector2i(&point), view.data)
+	return *goVector2f(&r)
+}
+
+func (w *RenderWindow) MapCoordsToPixel(point Vector2f, view *View) Vector2i {
+	r := C.sfRenderWindow_mapCoordsToPixel(w.data, cVector2f(&point), view.data)
+	return *goVector2i(&r)
+}
+
+func (w *RenderWindow) Draw(object Drawable, states *RenderStates) {
+	var r *C.sfRenderStates
+	if states == nil {
+		r = nil
+	} else {
+		t := cRenderStates(states)
+		r = &t
+	}
+	switch object.(type) {
+	case *Sprite:
+		C.sfRenderWindow_drawSprite(w.data, object.(*Sprite).data, r)
+	case *Text:
+		C.sfRenderWindow_drawText(w.data, object.(*Text).data, r)
+	case *Shape:
+		C.sfRenderWindow_drawShape(w.data, object.(*Shape).data, r)
+	case *CircleShape:
+		C.sfRenderWindow_drawCircleShape(w.data, object.(*CircleShape).data, r)
+	case *ConvexShape:
+		C.sfRenderWindow_drawConvexShape(w.data, object.(*ConvexShape).data, r)
+	case *RectangleShape:
+		C.sfRenderWindow_drawRectangleShape(w.data, object.(*RectangleShape).data, r)
+	case *VertexArray:
+		C.sfRenderWindow_drawVertexArray(w.data, object.(*VertexArray).data, r)
+	}
+}
+
+func (w *RenderWindow) PushGLStates() {
+	C.sfRenderWindow_pushGLStates(w.data)
+}
+
+func (w *RenderWindow) PopGLStates() {
+	C.sfRenderWindow_popGLStates(w.data)
+}
+
+func (w *RenderWindow) ResetGLStates() {
+	C.sfRenderWindow_resetGLStates(w.data)
+}
+
+func (w *RenderWindow) Capture() *Image {
+	return &Image{C.sfRenderWindow_capture(w.data)}
 }

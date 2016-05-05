@@ -11,13 +11,9 @@ type Context struct {
 	data *C.sfContext
 }
 
-func destroyContext(c *C.sfContext) {
-	C.sfContext_destroy(c)
-}
-
 func CreateContext() *Context {
 	c := C.sfContext_create()
-	runtime.SetFinalizer(c, destroyContext)
+	runtime.SetFinalizer(c, C.sfContext_destroy(c))
 	return &Context{c}
 }
 

@@ -27,20 +27,28 @@ func IsMouseButtonPressed(button MouseButton) bool {
 
 func MouseGetPosition(relativeTo SystemWindow) Vector2i {
 	var v C.sfVector2i
-	switch relativeTo.(type) {
-	case *RenderWindow:
-		v = C.sfMouse_getPositionRenderWindow(relativeTo.(*RenderWindow).data)
-	case *Window:
-		v = C.sfMouse_getPosition(relativeTo.(*Window).data)
+	if relativeTo == nil {
+		v = C.sfMouse_getPosition(nil)
+	} else {
+		switch relativeTo.(type) {
+		case *RenderWindow:
+			v = C.sfMouse_getPositionRenderWindow(relativeTo.(*RenderWindow).data)
+		case *Window:
+			v = C.sfMouse_getPosition(relativeTo.(*Window).data)
+		}
 	}
 	return *goVector2i(&v)
 }
 
 func MouseSetPosition(position Vector2i, relativeTo SystemWindow) {
-	switch relativeTo.(type) {
-	case *RenderWindow:
-		C.sfMouse_setPositionRenderWindow(cVector2i(&position), relativeTo.(*RenderWindow).data)
-	case *Window:
-		C.sfMouse_setPosition(cVector2i(&position), relativeTo.(*Window).data)
+	if relativeTo == nil {
+		C.sfMouse_setPosition(cVector2i(&position), nil)
+	} else {
+		switch relativeTo.(type) {
+		case *RenderWindow:
+			C.sfMouse_setPositionRenderWindow(cVector2i(&position), relativeTo.(*RenderWindow).data)
+		case *Window:
+			C.sfMouse_setPosition(cVector2i(&position), relativeTo.(*Window).data)
+		}
 	}
 }

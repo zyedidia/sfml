@@ -39,21 +39,29 @@ type Window struct {
 
 type WindowHandle C.sfWindowHandle
 
-func destroyWindow(w *C.sfWindow) {
-	C.sfWindow_destroy(w)
-}
-
 func CreateWindow(mode *VideoMode, title string, style WindowStyle, settings *ContextSettings) *Window {
-	cs := cContextSettings(settings)
-	w := C.sfWindow_createUnicode(cVideoMode(mode), cString(title), C.sfUint32(style), &cs)
-	runtime.SetFinalizer(w, destroyWindow)
+	var cs *C.sfContextSettings
+	if settings == nil {
+		cs = nil
+	} else {
+		c := cContextSettings(settings)
+		cs = &c
+	}
+	w := C.sfWindow_createUnicode(cVideoMode(mode), cString(title), C.sfUint32(style), cs)
+	runtime.SetFinalizer(w, C.sfWindow_destroy)
 	return &Window{w}
 }
 
 func CreateWindowFromHandle(handle WindowHandle, settings *ContextSettings) *Window {
-	cs := cContextSettings(settings)
-	w := C.sfWindow_createFromHandle(C.sfWindowHandle(handle), &cs)
-	runtime.SetFinalizer(w, destroyWindow)
+	var cs *C.sfContextSettings
+	if settings == nil {
+		cs = nil
+	} else {
+		c := cContextSettings(settings)
+		cs = &c
+	}
+	w := C.sfWindow_createFromHandle(C.sfWindowHandle(handle), cs)
+	runtime.SetFinalizer(w, C.sfWindow_destroy)
 	return &Window{w}
 }
 
@@ -154,4 +162,26 @@ func (w *Window) SetJoystickThreshold(treshold float32) {
 
 func (w *Window) GetSystemHandle() WindowHandle {
 	return WindowHandle(C.sfWindow_getSystemHandle(w.data))
+}
+
+func goContextSettings(cs *C.sfContextSettings) *ContextSettings {
+	return &ContextSettings{
+		uint(cs.depthBits),
+		uint(cs.stencilBits),
+		uint(cs.antialiasingLevel),
+		uint(cs.majorVersion),
+		uint(cs.minorVersion),
+		uint(cs.attributeFlags),
+	}
+}
+
+func cContextSettings(cs *ContextSettings) C.sfContextSettings {
+	return C.sfContextSettings{
+		C.uint(cs.DepthBits),
+		C.uint(cs.StencilBits),
+		C.uint(cs.AntialiasingLevel),
+		C.uint(cs.MajorVersion),
+		C.uint(cs.MinorVersion),
+		C.sfUint32(cs.AttributeFlags),
+	}
 }
