@@ -12,12 +12,11 @@ type RenderWindow struct {
 }
 
 func CreateRenderWindow(mode *VideoMode, title string, style WindowStyle, settings *ContextSettings) *RenderWindow {
-	var cs *C.sfContextSettings
+	cs := new(C.sfContextSettings)
 	if settings == nil {
 		cs = nil
 	} else {
-		c := cContextSettings(settings)
-		cs = &c
+		*cs = cContextSettings(settings)
 	}
 	w := C.sfRenderWindow_createUnicode(cVideoMode(mode), cString(title), C.sfUint32(style), cs)
 	runtime.SetFinalizer(w, C.sfRenderWindow_destroy)
@@ -25,12 +24,11 @@ func CreateRenderWindow(mode *VideoMode, title string, style WindowStyle, settin
 }
 
 func CreateRenderWindowFromHandle(handle WindowHandle, settings *ContextSettings) *RenderWindow {
-	var cs *C.sfContextSettings
+	cs := new(C.sfContextSettings)
 	if settings == nil {
 		cs = nil
 	} else {
-		c := cContextSettings(settings)
-		cs = &c
+		*cs = cContextSettings(settings)
 	}
 	w := C.sfRenderWindow_createFromHandle(C.sfWindowHandle(handle), cs)
 	runtime.SetFinalizer(w, C.sfRenderWindow_destroy)
@@ -168,42 +166,29 @@ func (w *RenderWindow) MapCoordsToPixel(point Vector2f, view *View) Vector2i {
 }
 
 func (w *RenderWindow) Draw(object Drawable, states *RenderStates) {
-	var r *C.sfRenderStates
+	s := new(C.sfRenderStates)
 	if states == nil {
-		r = nil
+		s = nil
 	} else {
-		t := cRenderStates(states)
-		r = &t
+		*s = cRenderStates(states)
 	}
 	switch object.(type) {
 	case *Sprite:
-		C.sfRenderWindow_drawSprite(w.data, object.(*Sprite).data, r)
+		C.sfRenderWindow_drawSprite(w.data, object.(*Sprite).data, s)
 	case *Text:
-		C.sfRenderWindow_drawText(w.data, object.(*Text).data, r)
+		C.sfRenderWindow_drawText(w.data, object.(*Text).data, s)
 	case *Shape:
-		C.sfRenderWindow_drawShape(w.data, object.(*Shape).data, r)
+		C.sfRenderWindow_drawShape(w.data, object.(*Shape).data, s)
 	case *CircleShape:
-		C.sfRenderWindow_drawCircleShape(w.data, object.(*CircleShape).data, r)
+		C.sfRenderWindow_drawCircleShape(w.data, object.(*CircleShape).data, s)
 	case *ConvexShape:
-		C.sfRenderWindow_drawConvexShape(w.data, object.(*ConvexShape).data, r)
+		C.sfRenderWindow_drawConvexShape(w.data, object.(*ConvexShape).data, s)
 	case *RectangleShape:
-		C.sfRenderWindow_drawRectangleShape(w.data, object.(*RectangleShape).data, r)
+		C.sfRenderWindow_drawRectangleShape(w.data, object.(*RectangleShape).data, s)
 	case *VertexArray:
-		C.sfRenderWindow_drawVertexArray(w.data, object.(*VertexArray).data, r)
+		C.sfRenderWindow_drawVertexArray(w.data, object.(*VertexArray).data, s)
 	}
 }
-
-/* TODO: Find a good way to convert vertex array
-func (w *RenderWindow) DrawPrimitives(vertices []Vertex, pType PrimitiveType, states *RenderStates) {
-	var r *C.sfRenderStates
-	if states == nil {
-		r = nil
-	} else {
-		t := cRenderStates(states)
-		r = &t
-	}
-	C.sfRenderTexture_drawPrimitives(w.data, (*C.sfVertex)(&vertices[0]), C.size_t(len(vertices)), C.sfPrimitiveType(pType), r)
-}*/
 
 func (w *RenderWindow) PushGLStates() {
 	C.sfRenderWindow_pushGLStates(w.data)

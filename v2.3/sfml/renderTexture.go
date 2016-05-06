@@ -62,42 +62,29 @@ func (r *RenderTexture) MapCoordsToPixel(point Vector2f, view *View) Vector2i {
 }
 
 func (r *RenderTexture) Draw(object Drawable, states *RenderStates) {
-	var rr *C.sfRenderStates
+	s := new(C.sfRenderStates)
 	if states == nil {
-		rr = nil
+		s = nil
 	} else {
-		t := cRenderStates(states)
-		rr = &t
+		*s = cRenderStates(states)
 	}
 	switch object.(type) {
 	case *Sprite:
-		C.sfRenderTexture_drawSprite(r.data, object.(*Sprite).data, rr)
+		C.sfRenderTexture_drawSprite(r.data, object.(*Sprite).data, s)
 	case *Text:
-		C.sfRenderTexture_drawText(r.data, object.(*Text).data, rr)
+		C.sfRenderTexture_drawText(r.data, object.(*Text).data, s)
 	case *Shape:
-		C.sfRenderTexture_drawShape(r.data, object.(*Shape).data, rr)
+		C.sfRenderTexture_drawShape(r.data, object.(*Shape).data, s)
 	case *CircleShape:
-		C.sfRenderTexture_drawCircleShape(r.data, object.(*CircleShape).data, rr)
+		C.sfRenderTexture_drawCircleShape(r.data, object.(*CircleShape).data, s)
 	case *ConvexShape:
-		C.sfRenderTexture_drawConvexShape(r.data, object.(*ConvexShape).data, rr)
+		C.sfRenderTexture_drawConvexShape(r.data, object.(*ConvexShape).data, s)
 	case *RectangleShape:
-		C.sfRenderTexture_drawRectangleShape(r.data, object.(*RectangleShape).data, rr)
+		C.sfRenderTexture_drawRectangleShape(r.data, object.(*RectangleShape).data, s)
 	case *VertexArray:
-		C.sfRenderTexture_drawVertexArray(r.data, object.(*VertexArray).data, rr)
+		C.sfRenderTexture_drawVertexArray(r.data, object.(*VertexArray).data, s)
 	}
 }
-
-/* TODO: Find a good way to convert vertex array
-func (r *RenderTexture) DrawPrimitives(vertices []Vertex, pType PrimitiveType, states *RenderStates) {
-	var rr *C.sfRenderStates
-	if states == nil {
-		rr = nil
-	} else {
-		t := cRenderStates(states)
-		rr = &t
-	}
-	C.sfRenderTexture_drawPrimitives(r.data, (*C.sfVertex)(&vertices[0]), C.size_t(len(vertices)), C.sfPrimitiveType(pType), rr)
-}*/
 
 func (r *RenderTexture) PushGLStates() {
 	C.sfRenderTexture_pushGLStates(r.data)

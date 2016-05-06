@@ -40,12 +40,11 @@ type Window struct {
 type WindowHandle C.sfWindowHandle
 
 func CreateWindow(mode *VideoMode, title string, style WindowStyle, settings *ContextSettings) *Window {
-	var cs *C.sfContextSettings
+	cs := new(C.sfContextSettings)
 	if settings == nil {
 		cs = nil
 	} else {
-		c := cContextSettings(settings)
-		cs = &c
+		*cs = cContextSettings(settings)
 	}
 	w := C.sfWindow_createUnicode(cVideoMode(mode), cString(title), C.sfUint32(style), cs)
 	runtime.SetFinalizer(w, C.sfWindow_destroy)
@@ -53,12 +52,11 @@ func CreateWindow(mode *VideoMode, title string, style WindowStyle, settings *Co
 }
 
 func CreateWindowFromHandle(handle WindowHandle, settings *ContextSettings) *Window {
-	var cs *C.sfContextSettings
+	cs := new(C.sfContextSettings)
 	if settings == nil {
 		cs = nil
 	} else {
-		c := cContextSettings(settings)
-		cs = &c
+		*cs = cContextSettings(settings)
 	}
 	w := C.sfWindow_createFromHandle(C.sfWindowHandle(handle), cs)
 	runtime.SetFinalizer(w, C.sfWindow_destroy)
