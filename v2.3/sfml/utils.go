@@ -7,6 +7,12 @@ import (
 	"unicode/utf8"
 )
 
+func goString(s *C.sfUint32) string {
+	//st := []uint32(unsafe.Pointer(s))
+	//return string(st)
+	return "FIXME"
+}
+
 func cString(s string) *C.sfUint32 {
 	s32 := make([]C.sfUint32, utf8.RuneCountInString(s)+1)
 	for _, r := range s {
