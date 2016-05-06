@@ -1,10 +1,12 @@
 package sfml
 
 //#include <SFML/Window.h>
+//#include "utils.h"
 import "C"
 
 import (
 	"unicode/utf8"
+	"unsafe"
 )
 
 func goString(s *C.sfUint32) string {
@@ -14,12 +16,13 @@ func goString(s *C.sfUint32) string {
 }
 
 func cString(s string) *C.sfUint32 {
-	s32 := make([]C.sfUint32, utf8.RuneCountInString(s)+1)
-	for _, r := range s {
-		s32 = append(s32, C.sfUint32(r))
+	length := utf8.RuneCountInString(s)
+	cstr := make([]uint32, length)
+	for _, v := range(s) {
+		cstr = append(cstr, uint32(v))
 	}
-	s32 = append(s32, 0)
-	return &s32[0]
+	cstr[length] = 0
+	return (*C.sfUint32)(unsafe.Pointer(&cstr[0]))
 }
 
 func goBool(b C.sfBool) bool {

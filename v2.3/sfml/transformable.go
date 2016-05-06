@@ -11,16 +11,22 @@ type Transformable struct {
 	data *C.sfTransformable
 }
 
+func destroyTransformable(t *Transformable) {
+	C.sfTransformable_destroy(t.data)
+}
+
 func CreateTransformable() *Transformable {
 	r := C.sfTransformable_create()
-	runtime.SetFinalizer(r, C.sfTransformable_destroy)
-	return &Transformable{r}
+	obj := &Transformable{r}
+	runtime.SetFinalizer(obj, destroyTransformable)
+	return obj
 }
 
 func (t *Transformable) Copy() *Transformable {
 	r := C.sfTransformable_copy(t.data)
-	runtime.SetFinalizer(r, C.sfTransformable_destroy)
-	return &Transformable{r}
+	obj := &Transformable{r}
+	runtime.SetFinalizer(obj, destroyTransformable)
+	return obj
 }
 
 func (t *Transformable) SetPosition(position Vector2f) {

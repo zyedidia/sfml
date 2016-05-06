@@ -11,10 +11,15 @@ type Context struct {
 	data *C.sfContext
 }
 
+func destroyContext(c *Context) {
+	C.sfContext_destroy(c.data)
+}
+
 func CreateContext() *Context {
 	c := C.sfContext_create()
-	runtime.SetFinalizer(c, C.sfContext_destroy(c))
-	return &Context{c}
+	obj := &Context{c}
+	runtime.SetFinalizer(obj, destroyContext)
+	return obj
 }
 
 func (c *Context) SetActive(active bool) {

@@ -11,6 +11,10 @@ type RenderWindow struct {
 	data *C.sfRenderWindow
 }
 
+func destroyRenderWindow(r *RenderWindow) {
+	C.sfRenderWindow_destroy(r.data)
+}
+
 func CreateRenderWindow(mode *VideoMode, title string, style WindowStyle, settings *ContextSettings) *RenderWindow {
 	cs := new(C.sfContextSettings)
 	if settings == nil {
@@ -19,8 +23,9 @@ func CreateRenderWindow(mode *VideoMode, title string, style WindowStyle, settin
 		*cs = cContextSettings(settings)
 	}
 	w := C.sfRenderWindow_createUnicode(cVideoMode(mode), cString(title), C.sfUint32(style), cs)
-	runtime.SetFinalizer(w, C.sfRenderWindow_destroy)
-	return &RenderWindow{w}
+	obj := &RenderWindow{w}
+	runtime.SetFinalizer(obj, destroyRenderWindow)
+	return obj
 }
 
 func CreateRenderWindowFromHandle(handle WindowHandle, settings *ContextSettings) *RenderWindow {
@@ -31,8 +36,9 @@ func CreateRenderWindowFromHandle(handle WindowHandle, settings *ContextSettings
 		*cs = cContextSettings(settings)
 	}
 	w := C.sfRenderWindow_createFromHandle(C.sfWindowHandle(handle), cs)
-	runtime.SetFinalizer(w, C.sfRenderWindow_destroy)
-	return &RenderWindow{w}
+	obj := &RenderWindow{w}
+	runtime.SetFinalizer(obj, destroyRenderWindow)
+	return obj
 }
 
 func (w *RenderWindow) Close() {

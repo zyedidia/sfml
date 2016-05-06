@@ -13,32 +13,37 @@ type Font struct {
 	data *C.sfFont
 }
 
+func destroyFont(f *Font) {
+	C.sfFont_destroy(f.data)
+}
+
 func CreateFontFromFile(filename string) *Font {
 	file := C.CString(filename)
 	defer C.free(unsafe.Pointer(file))
 	f := C.sfFont_createFromFile(file)
 	if f == nil {
 		return nil
-	} else {
-		runtime.SetFinalizer(f, C.sfFont_destroy)
 	}
-	return &Font{f}
+	obj := &Font{f}
+	runtime.SetFinalizer(obj, destroyFont)
+	return obj
 }
 
 func CreateFontFromMemory(data []byte) *Font {
 	f := C.sfFont_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)))
 	if f == nil {
 		return nil
-	} else {
-		runtime.SetFinalizer(f, C.sfFont_destroy)
 	}
-	return &Font{f}
+	obj := &Font{f}
+	runtime.SetFinalizer(obj, destroyFont)
+	return obj
 }
 
 func (f *Font) Copy() *Font {
 	cf := C.sfFont_copy(f.data)
-	runtime.SetFinalizer(f, C.sfFont_destroy)
-	return &Font{cf}
+	obj := &Font{cf}
+	runtime.SetFinalizer(obj, destroyFont)
+	return obj
 }
 
 func (f *Font) GetGlyph(codePoint rune, characterSize uint, bold bool) Glyph {

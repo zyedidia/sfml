@@ -11,10 +11,15 @@ type RenderTexture struct {
 	data *C.sfRenderTexture
 }
 
+func destroyRenderTexture(t *Texture) {
+	C.sfRenderTexture_destroy(t.data)
+}
+
 func CreateRenderTexture(width, height uint, depthBuffer bool) *RenderTexture {
 	r := C.sfRenderTexture_create(C.uint(width), C.uint(height), cBool(depthBuffer))
-	runtime.SetFinalizer(r, C.sfRenderTexture_destroy)
-	return &RenderTexture{r}
+	obj := &RenderTexture{r}
+	runtime.SetFinalizer(obj, destroyRenderTexture)
+	return obj
 }
 
 func (r *RenderTexture) GetSize() Vector2u {

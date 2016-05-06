@@ -39,6 +39,10 @@ type Window struct {
 
 type WindowHandle C.sfWindowHandle
 
+func destroyWindow(w *Window) {
+	C.sfWindow_destroy(w.data)
+}
+
 func CreateWindow(mode *VideoMode, title string, style WindowStyle, settings *ContextSettings) *Window {
 	cs := new(C.sfContextSettings)
 	if settings == nil {
@@ -47,8 +51,9 @@ func CreateWindow(mode *VideoMode, title string, style WindowStyle, settings *Co
 		*cs = cContextSettings(settings)
 	}
 	w := C.sfWindow_createUnicode(cVideoMode(mode), cString(title), C.sfUint32(style), cs)
-	runtime.SetFinalizer(w, C.sfWindow_destroy)
-	return &Window{w}
+	obj := &Window{w}
+	runtime.SetFinalizer(obj, destroyWindow)
+	return obj
 }
 
 func CreateWindowFromHandle(handle WindowHandle, settings *ContextSettings) *Window {
@@ -59,8 +64,9 @@ func CreateWindowFromHandle(handle WindowHandle, settings *ContextSettings) *Win
 		*cs = cContextSettings(settings)
 	}
 	w := C.sfWindow_createFromHandle(C.sfWindowHandle(handle), cs)
-	runtime.SetFinalizer(w, C.sfWindow_destroy)
-	return &Window{w}
+	obj := &Window{w}
+	runtime.SetFinalizer(obj, destroyWindow)
+	return obj
 }
 
 func (w *Window) Close() {

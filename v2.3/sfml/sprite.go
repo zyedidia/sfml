@@ -12,31 +12,36 @@ type Sprite struct {
 	tex  *Texture
 }
 
+func destroySprite(s *Sprite) {
+	C.sfSprite_destroy(s.data)
+}
+
 func CreateSprite() *Sprite {
 	s := C.sfSprite_create()
 	if s == nil {
 		return nil
-	} else {
-		runtime.SetFinalizer(s, C.sfSprite_destroy)
 	}
-	return &Sprite{data: s}
+	obj := &Sprite{data: s}
+	runtime.SetFinalizer(obj, destroySprite)
+	return obj
 }
 
 func CreateSpriteFromTexture(texture *Texture) *Sprite {
 	s := C.sfSprite_create()
 	if s == nil {
 		return nil
-	} else {
-		runtime.SetFinalizer(s, C.sfSprite_destroy)
-		C.sfSprite_setTexture(s, texture.data, C.sfTrue)
 	}
-	return &Sprite{s, texture}
+	C.sfSprite_setTexture(s, texture.data, C.sfTrue)
+	obj := &Sprite{s, texture}
+	runtime.SetFinalizer(obj, destroySprite)
+	return obj
 }
 
 func (s *Sprite) Copy() *Sprite {
 	cs := C.sfSprite_copy(s.data)
-	runtime.SetFinalizer(cs, C.sfSprite_destroy)
-	return &Sprite{cs, s.tex}
+	obj := &Sprite{cs, s.tex}
+	runtime.SetFinalizer(obj, destroySprite)
+	return obj
 }
 
 func (s *Sprite) SetPosition(position Vector2f) {

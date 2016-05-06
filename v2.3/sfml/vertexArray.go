@@ -11,27 +11,34 @@ type VertexArray struct {
 	data *C.sfVertexArray
 }
 
+func destroyVertexArray(v *VertexArray) {
+	C.sfVertexArray_destroy(v.data)
+}
+
 func CreateVertexArray(pType PrimitiveType) *VertexArray {
 	r := C.sfVertexArray_create()
-	runtime.SetFinalizer(r, C.sfVertexArray_destroy)
 	C.sfVertexArray_setPrimitiveType(r, C.sfPrimitiveType(pType))
-	return &VertexArray{r}
+	obj := &VertexArray{r}
+	runtime.SetFinalizer(obj, destroyVertexArray)
+	return obj
 }
 
 func CreateVertexArrayFromSlice(vertices []Vertex, pType PrimitiveType) *VertexArray {
 	r := C.sfVertexArray_create()
-	runtime.SetFinalizer(r, C.sfVertexArray_destroy)
 	for _, v := range vertices {
 		C.sfVertexArray_append(r, cVertex(&v))
 	}
 	C.sfVertexArray_setPrimitiveType(r, C.sfPrimitiveType(pType))
-	return &VertexArray{r}
+	obj := &VertexArray{r}
+	runtime.SetFinalizer(obj, destroyVertexArray)
+	return obj
 }
 
 func (v *VertexArray) Copy() *VertexArray {
 	r := C.sfVertexArray_copy(v.data)
+	obj := &VertexArray{r}
 	runtime.SetFinalizer(r, C.sfVertexArray_destroy)
-	return &VertexArray{r}
+	return obj
 }
 
 func (v *VertexArray) GetVertexCount() int {

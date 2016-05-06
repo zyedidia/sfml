@@ -22,31 +22,36 @@ const (
 
 type TextStyle int
 
+func destroyText(t *Text) {
+	C.sfText_destroy(t.data)
+}
+
 func CreateText(font *Font) *Text {
 	c := C.sfText_create()
 	if c == nil {
 		return nil
-	} else {
-		runtime.SetFinalizer(c, C.sfText_destroy)
 	}
-	return &Text{c, font}
+	obj := &Text{c, font}
+	runtime.SetFinalizer(obj, destroyText)
+	return obj
 }
 
 func CreateTextFromString(text string, font *Font) *Text {
 	c := C.sfText_create()
 	if c == nil {
 		return nil
-	} else {
-		runtime.SetFinalizer(c, C.sfText_destroy)
-		C.sfText_setUnicodeString(c, cString(text))
 	}
-	return &Text{c, font}
+	obj := &Text{c, font}
+	runtime.SetFinalizer(obj, destroyText)
+	C.sfText_setString(c, C.CString(text))
+	return obj
 }
 
 func (t *Text) Copy() *Text {
 	c := C.sfText_copy(t.data)
-	runtime.SetFinalizer(c, C.sfText_destroy)
-	return &Text{c, t.font}
+	obj := &Text{c, t.font}
+	runtime.SetFinalizer(obj, destroyText)
+	return obj
 }
 
 func (t *Text) SetPosition(position Vector2f) {
@@ -107,12 +112,12 @@ func (t *Text) GetInverseTransform() Transform {
 }
 
 func (t *Text) SetString(text string) {
-	C.sfText_setUnicodeString(t.data, cString(text))
+	C.sfText_setString(t.data, C.CString(text))
 }
 
 func (t *Text) GetString() string {
-	r := C.sfText_getUnicodeString(t.data)
-	return goString(r)
+	r := C.sfText_getString(t.data)
+	return 	C.GoString(r)
 }
 
 func (t *Text) SetFont(font *Font) {

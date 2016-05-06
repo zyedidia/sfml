@@ -11,22 +11,29 @@ type View struct {
 	data *C.sfView
 }
 
+func destroyView(v *View) {
+	C.sfView_destroy(v.data)
+}
+
 func CreateView() *View {
 	v := C.sfView_create()
-	runtime.SetFinalizer(v, C.sfView_destroy)
-	return &View{v}
+	obj := &View{v}
+	runtime.SetFinalizer(obj, destroyView)
+	return obj
 }
 
 func CreateViewFromRect(rect Rectf) *View {
 	v := C.sfView_createFromRect(cRectf(&rect))
-	runtime.SetFinalizer(v, C.sfView_destroy)
-	return &View{v}
+	obj := &View{v}
+	runtime.SetFinalizer(obj, destroyView)
+	return obj
 }
 
 func (v *View) Copy() *View {
 	vv := C.sfView_copy(v.data)
-	runtime.SetFinalizer(vv, C.sfView_destroy)
-	return &View{vv}
+	obj := &View{vv}
+	runtime.SetFinalizer(obj, destroyView)
+	return obj
 }
 
 func (v *View) SetCenter(center Vector2f) {

@@ -13,14 +13,18 @@ type Texture struct {
 	data *C.sfTexture
 }
 
+func destroyTexture(t *Texture) {
+	C.sfTexture_destroy(t.data)
+}
+
 func CreateTexture(width, height uint) *Texture {
 	c := C.sfTexture_create(C.uint(width), C.uint(height))
 	if c == nil {
 		return nil
-	} else {
-		runtime.SetFinalizer(c, C.sfTexture_destroy)
 	}
-	return &Texture{c}
+	obj := &Texture{c}
+	runtime.SetFinalizer(obj, destroyTexture)
+	return obj
 }
 
 func CreateTextureFromFile(filename string) *Texture {
@@ -29,36 +33,37 @@ func CreateTextureFromFile(filename string) *Texture {
 	c := C.sfTexture_createFromFile(file, nil)
 	if c == nil {
 		return nil
-	} else {
-		runtime.SetFinalizer(c, C.sfTexture_destroy)
 	}
-	return &Texture{c}
+	obj := &Texture{c}
+	runtime.SetFinalizer(obj, destroyTexture)
+	return obj
 }
 
 func CreateTextureFromMemory(data []byte) *Texture {
 	c := C.sfTexture_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)), nil)
 	if c == nil {
 		return nil
-	} else {
-		runtime.SetFinalizer(c, C.sfTexture_destroy)
 	}
-	return &Texture{c}
+	obj := &Texture{c}
+	runtime.SetFinalizer(obj, destroyTexture)
+	return obj
 }
 
 func CreateTextureFromImage(image *Image) *Texture {
 	c := C.sfTexture_createFromImage(image.data, nil)
 	if c == nil {
 		return nil
-	} else {
-		runtime.SetFinalizer(c, C.sfTexture_destroy)
 	}
-	return &Texture{c}
+	obj := &Texture{c}
+	runtime.SetFinalizer(obj, destroyTexture)
+	return obj
 }
 
 func (t *Texture) Copy() *Texture {
 	c := C.sfTexture_copy(t.data)
-	runtime.SetFinalizer(c, C.sfTexture_destroy)
-	return &Texture{c}
+	obj := &Texture{c}
+	runtime.SetFinalizer(obj, destroyTexture)
+	return obj
 }
 
 func (t *Texture) GetSize() Vector2u {
