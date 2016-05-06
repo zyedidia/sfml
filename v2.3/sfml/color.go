@@ -4,15 +4,15 @@ package sfml
 import "C"
 
 var (
-	ColorBlack       = goColor(&C.sfBlack)
-	ColorWhite       = goColor(&C.sfWhite)
-	ColorRed         = goColor(&C.sfRed)
-	ColorGreen       = goColor(&C.sfGreen)
-	ColorBlue        = goColor(&C.sfBlue)
-	ColorYellow      = goColor(&C.sfYellow)
-	ColorMagenta     = goColor(&C.sfMagenta)
-	ColorCyan        = goColor(&C.sfCyan)
-	ColorTransparent = goColor(&C.sfTransparent)
+	ColorBlack       = *goColor(&C.sfBlack)
+	ColorWhite       = *goColor(&C.sfWhite)
+	ColorRed         = *goColor(&C.sfRed)
+	ColorGreen       = *goColor(&C.sfGreen)
+	ColorBlue        = *goColor(&C.sfBlue)
+	ColorYellow      = *goColor(&C.sfYellow)
+	ColorMagenta     = *goColor(&C.sfMagenta)
+	ColorCyan        = *goColor(&C.sfCyan)
+	ColorTransparent = *goColor(&C.sfTransparent)
 )
 
 type Color struct {
