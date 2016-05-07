@@ -31,6 +31,7 @@ func CreateText(font *Font) *Text {
 	if c == nil {
 		return nil
 	}
+	C.sfText_setFont(c, font.data)
 	obj := &Text{c, font}
 	runtime.SetFinalizer(obj, destroyText)
 	return obj
@@ -41,9 +42,10 @@ func CreateTextFromString(text string, font *Font) *Text {
 	if c == nil {
 		return nil
 	}
+	C.sfText_setFont(c, font.data)
 	obj := &Text{c, font}
 	runtime.SetFinalizer(obj, destroyText)
-	C.sfText_setString(c, C.CString(text))
+	C.sfText_setUnicodeString(c, cString(text))
 	return obj
 }
 
@@ -112,7 +114,7 @@ func (t *Text) GetInverseTransform() Transform {
 }
 
 func (t *Text) SetString(text string) {
-	C.sfText_setString(t.data, C.CString(text))
+	C.sfText_setUnicodeString(t.data, cString(text))
 }
 
 func (t *Text) GetString() string {
