@@ -22,8 +22,8 @@ func CreateRenderWindow(mode VideoMode, title string, style WindowStyle, setting
 	} else {
 		*cs = cContextSettings(settings)
 	}
-	w := C.sfRenderWindow_createUnicode(cVideoMode(&mode), cString(title), C.sfUint32(style), cs)
-	obj := &RenderWindow{w}
+	r := C.sfRenderWindow_createUnicode(cVideoMode(&mode), cString(title), C.sfUint32(style), cs)
+	obj := &RenderWindow{r}
 	runtime.SetFinalizer(obj, destroyRenderWindow)
 	return obj
 }
@@ -35,193 +35,193 @@ func CreateRenderWindowFromHandle(handle WindowHandle, settings *ContextSettings
 	} else {
 		*cs = cContextSettings(settings)
 	}
-	w := C.sfRenderWindow_createFromHandle(C.sfWindowHandle(handle), cs)
-	obj := &RenderWindow{w}
+	r := C.sfRenderWindow_createFromHandle(C.sfWindowHandle(handle), cs)
+	obj := &RenderWindow{r}
 	runtime.SetFinalizer(obj, destroyRenderWindow)
 	return obj
 }
 
-func (w *RenderWindow) Close() {
-	C.sfRenderWindow_close(w.data)
+func (r *RenderWindow) Close() {
+	C.sfRenderWindow_close(r.data)
 }
 
-func (w *RenderWindow) IsOpen() bool {
-	return goBool(C.sfRenderWindow_isOpen(w.data))
+func (r *RenderWindow) IsOpen() bool {
+	return goBool(C.sfRenderWindow_isOpen(r.data))
 }
 
-func (w *RenderWindow) GetSettings() *ContextSettings {
-	cs := C.sfRenderWindow_getSettings(w.data)
+func (r *RenderWindow) GetSettings() *ContextSettings {
+	cs := C.sfRenderWindow_getSettings(r.data)
 	return goContextSettings(&cs)
 }
 
-func (w *RenderWindow) PollEvent() *Event {
+func (r *RenderWindow) PollEvent() *Event {
 	var ev C.sfEvent
-	if C.sfRenderWindow_pollEvent(w.data, &ev) == C.sfTrue {
+	if C.sfRenderWindow_pollEvent(r.data, &ev) == C.sfTrue {
 		return goEvent(&ev)
 	}
 	return nil
 }
 
-func (w *RenderWindow) WaitEvent() *Event {
+func (r *RenderWindow) WaitEvent() *Event {
 	var ev C.sfEvent
-	if C.sfRenderWindow_waitEvent(w.data, &ev) == C.sfTrue {
+	if C.sfRenderWindow_waitEvent(r.data, &ev) == C.sfTrue {
 		return goEvent(&ev)
 	}
 	return nil
 }
 
-func (w *RenderWindow) GetPosition() Vector2i {
-	v := C.sfRenderWindow_getPosition(w.data)
+func (r *RenderWindow) GetPosition() Vector2i {
+	v := C.sfRenderWindow_getPosition(r.data)
 	return *goVector2i(&v)
 }
 
-func (w *RenderWindow) SetPosition(position Vector2i) {
-	C.sfRenderWindow_setPosition(w.data, cVector2i(&position))
+func (r *RenderWindow) SetPosition(position Vector2i) {
+	C.sfRenderWindow_setPosition(r.data, cVector2i(&position))
 }
 
-func (w *RenderWindow) GetSize() Vector2u {
-	v := C.sfRenderWindow_getSize(w.data)
+func (r *RenderWindow) GetSize() Vector2u {
+	v := C.sfRenderWindow_getSize(r.data)
 	return *goVector2u(&v)
 }
 
-func (w *RenderWindow) SetSize(size Vector2u) {
-	C.sfRenderWindow_setSize(w.data, cVector2u(&size))
+func (r *RenderWindow) SetSize(size Vector2u) {
+	C.sfRenderWindow_setSize(r.data, cVector2u(&size))
 }
 
-func (w *RenderWindow) SetTitle(title string) {
-	C.sfRenderWindow_setUnicodeTitle(w.data, cString(title))
+func (r *RenderWindow) SetTitle(title string) {
+	C.sfRenderWindow_setUnicodeTitle(r.data, cString(title))
 }
 
-func (w *RenderWindow) SetIcon(width, height uint, pixels []byte) {
-	C.sfRenderWindow_setIcon(w.data, C.uint(width), C.uint(height), (*C.sfUint8)(&pixels[0]))
+func (r *RenderWindow) SetIcon(width, height uint, pixels []byte) {
+	C.sfRenderWindow_setIcon(r.data, C.uint(width), C.uint(height), (*C.sfUint8)(&pixels[0]))
 }
 
-func (w *RenderWindow) SetVisible(visible bool) {
-	C.sfRenderWindow_setVisible(w.data, cBool(visible))
+func (r *RenderWindow) SetVisible(visible bool) {
+	C.sfRenderWindow_setVisible(r.data, cBool(visible))
 }
 
-func (w *RenderWindow) SetMouseCursorVisible(visible bool) {
-	C.sfRenderWindow_setMouseCursorVisible(w.data, cBool(visible))
+func (r *RenderWindow) SetMouseCursorVisible(visible bool) {
+	C.sfRenderWindow_setMouseCursorVisible(r.data, cBool(visible))
 }
 
-func (w *RenderWindow) SetVerticalSyncEnabled(enabled bool) {
-	C.sfRenderWindow_setVerticalSyncEnabled(w.data, cBool(enabled))
+func (r *RenderWindow) SetVerticalSyncEnabled(enabled bool) {
+	C.sfRenderWindow_setVerticalSyncEnabled(r.data, cBool(enabled))
 }
 
-func (w *RenderWindow) SetKeyRepeatEnabled(enabled bool) {
-	C.sfRenderWindow_setKeyRepeatEnabled(w.data, cBool(enabled))
+func (r *RenderWindow) SetKeyRepeatEnabled(enabled bool) {
+	C.sfRenderWindow_setKeyRepeatEnabled(r.data, cBool(enabled))
 }
 
-func (w *RenderWindow) SetActive(active bool) bool {
-	return goBool(C.sfRenderWindow_setActive(w.data, cBool(active)))
+func (r *RenderWindow) SetActive(active bool) bool {
+	return goBool(C.sfRenderWindow_setActive(r.data, cBool(active)))
 }
 
-func (w *RenderWindow) RequestFocus() {
-	C.sfRenderWindow_requestFocus(w.data)
+func (r *RenderWindow) RequestFocus() {
+	C.sfRenderWindow_requestFocus(r.data)
 }
 
-func (w *RenderWindow) HasFocus() bool {
-	return goBool(C.sfRenderWindow_hasFocus(w.data))
+func (r *RenderWindow) HasFocus() bool {
+	return goBool(C.sfRenderWindow_hasFocus(r.data))
 }
 
-func (w *RenderWindow) Display() {
-	C.sfRenderWindow_display(w.data)
+func (r *RenderWindow) Display() {
+	C.sfRenderWindow_display(r.data)
 }
 
-func (w *RenderWindow) SetFramerateLimit(limit uint) {
-	C.sfRenderWindow_setFramerateLimit(w.data, C.uint(limit))
+func (r *RenderWindow) SetFramerateLimit(limit uint) {
+	C.sfRenderWindow_setFramerateLimit(r.data, C.uint(limit))
 }
 
-func (w *RenderWindow) SetJoystickThreshold(treshold float32) {
-	C.sfRenderWindow_setJoystickThreshold(w.data, C.float(treshold))
+func (r *RenderWindow) SetJoystickThreshold(treshold float32) {
+	C.sfRenderWindow_setJoystickThreshold(r.data, C.float(treshold))
 }
 
-func (w *RenderWindow) GetSystemHandle() WindowHandle {
-	return WindowHandle(C.sfRenderWindow_getSystemHandle(w.data))
+func (r *RenderWindow) GetSystemHandle() WindowHandle {
+	return WindowHandle(C.sfRenderWindow_getSystemHandle(r.data))
 }
 
-func (w *RenderWindow) Clear(color Color) {
-	C.sfRenderWindow_clear(w.data, cColor(&color))
+func (r *RenderWindow) Clear(color Color) {
+	C.sfRenderWindow_clear(r.data, cColor(&color))
 }
 
-func (w *RenderWindow) SetView(view *View) {
-	C.sfRenderWindow_setView(w.data, view.data)
+func (r *RenderWindow) SetView(view *View) {
+	C.sfRenderWindow_setView(r.data, view.data)
 }
 
-func (w *RenderWindow) GetView() *View {
-	return &View{C.sfRenderWindow_getView(w.data)}
+func (r *RenderWindow) GetView() *View {
+	return &View{C.sfRenderWindow_getView(r.data)}
 }
 
-func (w *RenderWindow) GetDefaultView() *View {
-	return &View{C.sfRenderWindow_getDefaultView(w.data)}
+func (r *RenderWindow) GetDefaultView() *View {
+	return &View{C.sfRenderWindow_getDefaultView(r.data)}
 }
 
-func (w *RenderWindow) GetViewport(view *View) Recti {
-	r := C.sfRenderWindow_getViewport(w.data, view.data)
-	return *goRecti(&r)
+func (r *RenderWindow) GetViewport(view *View) Recti {
+	v := C.sfRenderWindow_getViewport(r.data, view.data)
+	return *goRecti(&v)
 }
 
-func (w *RenderWindow) MapPixelToCoords(point Vector2i, view *View) Vector2f {
-	r := C.sfRenderWindow_mapPixelToCoords(w.data, cVector2i(&point), view.data)
-	return *goVector2f(&r)
+func (r *RenderWindow) MapPixelToCoords(point Vector2i, view *View) Vector2f {
+	p := C.sfRenderWindow_mapPixelToCoords(r.data, cVector2i(&point), view.data)
+	return *goVector2f(&p)
 }
 
-func (w *RenderWindow) MapCoordsToPixel(point Vector2f, view *View) Vector2i {
-	r := C.sfRenderWindow_mapCoordsToPixel(w.data, cVector2f(&point), view.data)
-	return *goVector2i(&r)
+func (r *RenderWindow) MapCoordsToPixel(point Vector2f, view *View) Vector2i {
+	p := C.sfRenderWindow_mapCoordsToPixel(r.data, cVector2f(&point), view.data)
+	return *goVector2i(&p)
 }
 
-func (w *RenderWindow) Draw(object Drawable) {
+func (r *RenderWindow) Draw(object Drawable) {
 	switch object.(type) {
 	case *Sprite:
-		C.sfRenderWindow_drawSprite(w.data, object.(*Sprite).data, nil)
+		C.sfRenderWindow_drawSprite(r.data, object.(*Sprite).data, nil)
 	case *Text:
-		C.sfRenderWindow_drawText(w.data, object.(*Text).data, nil)
+		C.sfRenderWindow_drawText(r.data, object.(*Text).data, nil)
 	case *Shape:
-		C.sfRenderWindow_drawShape(w.data, object.(*Shape).data, nil)
+		C.sfRenderWindow_drawShape(r.data, object.(*Shape).data, nil)
 	case *CircleShape:
-		C.sfRenderWindow_drawCircleShape(w.data, object.(*CircleShape).data, nil)
+		C.sfRenderWindow_drawCircleShape(r.data, object.(*CircleShape).data, nil)
 	case *ConvexShape:
-		C.sfRenderWindow_drawConvexShape(w.data, object.(*ConvexShape).data, nil)
+		C.sfRenderWindow_drawConvexShape(r.data, object.(*ConvexShape).data, nil)
 	case *RectangleShape:
-		C.sfRenderWindow_drawRectangleShape(w.data, object.(*RectangleShape).data, nil)
+		C.sfRenderWindow_drawRectangleShape(r.data, object.(*RectangleShape).data, nil)
 	case *VertexArray:
-		C.sfRenderWindow_drawVertexArray(w.data, object.(*VertexArray).data, nil)
+		C.sfRenderWindow_drawVertexArray(r.data, object.(*VertexArray).data, nil)
 	}
 }
 
-func (w *RenderWindow) DrawWithRenderStates(object Drawable, states *RenderStates) {
+func (r *RenderWindow) DrawWithRenderStates(object Drawable, states *RenderStates) {
 	s := cRenderStates(states)
 	switch object.(type) {
 	case *Sprite:
-		C.sfRenderWindow_drawSprite(w.data, object.(*Sprite).data, &s)
+		C.sfRenderWindow_drawSprite(r.data, object.(*Sprite).data, &s)
 	case *Text:
-		C.sfRenderWindow_drawText(w.data, object.(*Text).data, &s)
+		C.sfRenderWindow_drawText(r.data, object.(*Text).data, &s)
 	case *Shape:
-		C.sfRenderWindow_drawShape(w.data, object.(*Shape).data, &s)
+		C.sfRenderWindow_drawShape(r.data, object.(*Shape).data, &s)
 	case *CircleShape:
-		C.sfRenderWindow_drawCircleShape(w.data, object.(*CircleShape).data, &s)
+		C.sfRenderWindow_drawCircleShape(r.data, object.(*CircleShape).data, &s)
 	case *ConvexShape:
-		C.sfRenderWindow_drawConvexShape(w.data, object.(*ConvexShape).data, &s)
+		C.sfRenderWindow_drawConvexShape(r.data, object.(*ConvexShape).data, &s)
 	case *RectangleShape:
-		C.sfRenderWindow_drawRectangleShape(w.data, object.(*RectangleShape).data, &s)
+		C.sfRenderWindow_drawRectangleShape(r.data, object.(*RectangleShape).data, &s)
 	case *VertexArray:
-		C.sfRenderWindow_drawVertexArray(w.data, object.(*VertexArray).data, &s)
+		C.sfRenderWindow_drawVertexArray(r.data, object.(*VertexArray).data, &s)
 	}
 }
 
-func (w *RenderWindow) PushGLStates() {
-	C.sfRenderWindow_pushGLStates(w.data)
+func (r *RenderWindow) PushGLStates() {
+	C.sfRenderWindow_pushGLStates(r.data)
 }
 
-func (w *RenderWindow) PopGLStates() {
-	C.sfRenderWindow_popGLStates(w.data)
+func (r *RenderWindow) PopGLStates() {
+	C.sfRenderWindow_popGLStates(r.data)
 }
 
-func (w *RenderWindow) ResetGLStates() {
-	C.sfRenderWindow_resetGLStates(w.data)
+func (r *RenderWindow) ResetGLStates() {
+	C.sfRenderWindow_resetGLStates(r.data)
 }
 
-func (w *RenderWindow) Capture() *Image {
-	return &Image{C.sfRenderWindow_capture(w.data)}
+func (r *RenderWindow) Capture() *Image {
+	return &Image{C.sfRenderWindow_capture(r.data)}
 }
