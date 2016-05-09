@@ -171,17 +171,21 @@ func (t *Text) GetGlobalBounds() Rectf {
 	return *goRectf(&r)
 }
 
-func (t *Text) Draw(target RenderTarget, states *RenderStates) {
-	ss := new(C.sfRenderStates)
-	if states == nil {
-		ss = nil
-	} else {
-		*ss = cRenderStates(states)
-	}
+func (t *Text) Draw(target RenderTarget) {
 	switch target.(type) {
 	case *RenderTexture:
-		C.sfRenderTexture_drawText(target.(*RenderTexture).data, t.data, ss)
+		C.sfRenderTexture_drawText(target.(*RenderTexture).data, t.data, nil)
 	case *RenderWindow:
-		C.sfRenderWindow_drawText(target.(*RenderWindow).data, t.data, ss)
+		C.sfRenderWindow_drawText(target.(*RenderWindow).data, t.data, nil)
+	}
+}
+
+func (t *Text) DrawWithRenderStates(target RenderTarget, states *RenderStates) {
+	ss := cRenderStates(states)
+	switch target.(type) {
+	case *RenderTexture:
+		C.sfRenderTexture_drawText(target.(*RenderTexture).data, t.data, &ss)
+	case *RenderWindow:
+		C.sfRenderWindow_drawText(target.(*RenderWindow).data, t.data, &ss)
 	}
 }

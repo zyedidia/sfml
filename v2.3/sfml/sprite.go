@@ -150,17 +150,21 @@ func (s *Sprite) GetGlobalBounds() Rectf {
 	return *goRectf(&r)
 }
 
-func (s *Sprite) Draw(target RenderTarget, states *RenderStates) {
-	ss := new(C.sfRenderStates)
-	if states == nil {
-		ss = nil
-	} else {
-		*ss = cRenderStates(states)
-	}
+func (s *Sprite) Draw(target RenderTarget) {
 	switch target.(type) {
 	case *RenderTexture:
-		C.sfRenderTexture_drawSprite(target.(*RenderTexture).data, s.data, ss)
+		C.sfRenderTexture_drawSprite(target.(*RenderTexture).data, s.data, nil)
 	case *RenderWindow:
-		C.sfRenderWindow_drawSprite(target.(*RenderWindow).data, s.data, ss)
+		C.sfRenderWindow_drawSprite(target.(*RenderWindow).data, s.data, nil)
+	}
+}
+
+func (s *Sprite) DrawWithRenderStates(target RenderTarget, states *RenderStates) {
+	ss := cRenderStates(states)
+	switch target.(type) {
+	case *RenderTexture:
+		C.sfRenderTexture_drawSprite(target.(*RenderTexture).data, s.data, &ss)
+	case *RenderWindow:
+		C.sfRenderWindow_drawSprite(target.(*RenderWindow).data, s.data, &ss)
 	}
 }

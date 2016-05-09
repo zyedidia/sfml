@@ -75,17 +75,21 @@ func (v *VertexArray) GetBounds() Rectf {
 	return *goRectf(&r)
 }
 
-func (v *VertexArray) Draw(target RenderTarget, states *RenderStates) {
-	s := new(C.sfRenderStates)
-	if states == nil {
-		s = nil
-	} else {
-		*s = cRenderStates(states)
-	}
+func (v *VertexArray) Draw(target RenderTarget) {
 	switch target.(type) {
 	case *RenderTexture:
-		C.sfRenderTexture_drawSprite(target.(*RenderTexture).data, v.data, s)
+		C.sfRenderTexture_drawSprite(target.(*RenderTexture).data, v.data, nil)
 	case *RenderWindow:
-		C.sfRenderWindow_drawSprite(target.(*RenderWindow).data, v.data, s)
+		C.sfRenderWindow_drawSprite(target.(*RenderWindow).data, v.data, nil)
+	}
+}
+
+func (v *VertexArray) DrawWithRenderStates(target RenderTarget, states *RenderStates) {
+	s := cRenderStates(states)
+	switch target.(type) {
+	case *RenderTexture:
+		C.sfRenderTexture_drawSprite(target.(*RenderTexture).data, v.data, &s)
+	case *RenderWindow:
+		C.sfRenderWindow_drawSprite(target.(*RenderWindow).data, v.data, &s)
 	}
 }
