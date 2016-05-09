@@ -69,7 +69,7 @@ func (r *RenderTexture) MapCoordsToPixel(point Vector2f, view *View) Vector2i {
 	return *goVector2i(&rr)
 }
 
-func (r *RenderTexture) Draw(object Drawable, states *RenderStates) {
+func (r *RenderTexture) Draw(object Drawable) {
 	switch object.(type) {
 	case *Sprite:
 		C.sfRenderTexture_drawSprite(r.data, object.(*Sprite).data, nil)

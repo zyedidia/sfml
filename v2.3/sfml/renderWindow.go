@@ -92,7 +92,7 @@ func (w *RenderWindow) SetTitle(title string) {
 	C.sfRenderWindow_setUnicodeTitle(w.data, cString(title))
 }
 
-func (w *RenderWindow) SetIcon(width, height uint, pixels []uint8) {
+func (w *RenderWindow) SetIcon(width, height uint, pixels []byte) {
 	C.sfRenderWindow_setIcon(w.data, C.uint(width), C.uint(height), (*C.sfUint8)(&pixels[0]))
 }
 

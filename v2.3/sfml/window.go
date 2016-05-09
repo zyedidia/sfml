@@ -120,7 +120,7 @@ func (w *Window) SetTitle(title string) {
 	C.sfWindow_setUnicodeTitle(w.data, cString(title))
 }
 
-func (w *Window) SetIcon(width, height uint, pixels []uint8) {
+func (w *Window) SetIcon(width, height uint, pixels []byte) {
 	C.sfWindow_setIcon(w.data, C.uint(width), C.uint(height), (*C.sfUint8)(&pixels[0]))
 }
 
