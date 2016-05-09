@@ -145,16 +145,8 @@ func (c *RectangleShape) GetOutlineThickness() float32 {
 	return float32(C.sfRectangleShape_getOutlineThickness(c.data))
 }
 
-func (c *RectangleShape) SetPointCount(count int) {
-	C.sfRectangleShape_setPointCount(c.data, C.size_t(count))
-}
-
 func (c *RectangleShape) GetPointCount() int {
 	return int(C.sfRectangleShape_getPointCount(c.data))
-}
-
-func (c *RectangleShape) SetPoint(index int, point Vector2f) {
-	C.sfRectangleShape_setPoint(c.data, C.size_t(index), cVector2f(&point))
 }
 
 func (c *RectangleShape) GetPoint(index int) Vector2f {
