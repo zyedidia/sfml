@@ -26,12 +26,11 @@ func CreateEmptyConvexShape() *ConvexShape {
 	return obj
 }
 
-func CreateConvexShape(radius float32, pointCount uint) *ConvexShape {
+func CreateConvexShape(pointCount uint) *ConvexShape {
 	c := C.sfConvexShape_create()
 	if c == nil {
 		return nil
 	}
-	C.sfConvexShape_setRadius(c, C.float(radius))
 	C.sfConvexShape_setPointCount(c, C.size_t(pointCount))
 	obj := &ConvexShape{data: c}
 	runtime.SetFinalizer(obj, destroyConvexShape)
@@ -152,14 +151,6 @@ func (c *ConvexShape) SetPointCount(count int) {
 
 func (c *ConvexShape) GetPointCount() int {
 	return int(C.sfConvexShape_getPointCount(c.data))
-}
-
-func (c *ConvexShape) SetRadius(radius float32) {
-	C.sfConvexShape_setRadius(c.data, C.float(radius))
-}
-
-func (c *ConvexShape) GetRadius() float32 {
-	return float32(C.sfConvexShape_getRadius(c.data))
 }
 
 func (c *ConvexShape) SetPoint(index int, point Vector2f) {
