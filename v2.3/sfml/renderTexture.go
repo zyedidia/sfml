@@ -17,6 +17,9 @@ func destroyRenderTexture(t *Texture) {
 
 func CreateRenderTexture(width, height uint, depthBuffer bool) *RenderTexture {
 	r := C.sfRenderTexture_create(C.uint(width), C.uint(height), cBool(depthBuffer))
+	if r == nil {
+		return nil
+	}
 	obj := &RenderTexture{r}
 	runtime.SetFinalizer(obj, destroyRenderTexture)
 	return obj
@@ -67,27 +70,41 @@ func (r *RenderTexture) MapCoordsToPixel(point Vector2f, view *View) Vector2i {
 }
 
 func (r *RenderTexture) Draw(object Drawable, states *RenderStates) {
-	s := new(C.sfRenderStates)
-	if states == nil {
-		s = nil
-	} else {
-		*s = cRenderStates(states)
-	}
 	switch object.(type) {
 	case *Sprite:
-		C.sfRenderTexture_drawSprite(r.data, object.(*Sprite).data, s)
+		C.sfRenderTexture_drawSprite(r.data, object.(*Sprite).data, nil)
 	case *Text:
-		C.sfRenderTexture_drawText(r.data, object.(*Text).data, s)
+		C.sfRenderTexture_drawText(r.data, object.(*Text).data, nil)
 	case *Shape:
-		C.sfRenderTexture_drawShape(r.data, object.(*Shape).data, s)
+		C.sfRenderTexture_drawShape(r.data, object.(*Shape).data, nil)
 	case *CircleShape:
-		C.sfRenderTexture_drawCircleShape(r.data, object.(*CircleShape).data, s)
+		C.sfRenderTexture_drawCircleShape(r.data, object.(*CircleShape).data, nil)
 	case *ConvexShape:
-		C.sfRenderTexture_drawConvexShape(r.data, object.(*ConvexShape).data, s)
+		C.sfRenderTexture_drawConvexShape(r.data, object.(*ConvexShape).data, nil)
 	case *RectangleShape:
-		C.sfRenderTexture_drawRectangleShape(r.data, object.(*RectangleShape).data, s)
+		C.sfRenderTexture_drawRectangleShape(r.data, object.(*RectangleShape).data, nil)
 	case *VertexArray:
-		C.sfRenderTexture_drawVertexArray(r.data, object.(*VertexArray).data, s)
+		C.sfRenderTexture_drawVertexArray(r.data, object.(*VertexArray).data, nil)
+	}
+}
+
+func (r *RenderTexture) DrawWithRenderStates(object Drawable, states *RenderStates) {
+	s := cRenderStates(states)
+	switch object.(type) {
+	case *Sprite:
+		C.sfRenderTexture_drawSprite(r.data, object.(*Sprite).data, &s)
+	case *Text:
+		C.sfRenderTexture_drawText(r.data, object.(*Text).data, &s)
+	case *Shape:
+		C.sfRenderTexture_drawShape(r.data, object.(*Shape).data, &s)
+	case *CircleShape:
+		C.sfRenderTexture_drawCircleShape(r.data, object.(*CircleShape).data, &s)
+	case *ConvexShape:
+		C.sfRenderTexture_drawConvexShape(r.data, object.(*ConvexShape).data, &s)
+	case *RectangleShape:
+		C.sfRenderTexture_drawRectangleShape(r.data, object.(*RectangleShape).data, &s)
+	case *VertexArray:
+		C.sfRenderTexture_drawVertexArray(r.data, object.(*VertexArray).data, &s)
 	}
 }
 

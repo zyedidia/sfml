@@ -15,7 +15,7 @@ func destroyVertexArray(v *VertexArray) {
 	C.sfVertexArray_destroy(v.data)
 }
 
-func CreateVertexArray(pType PrimitiveType) *VertexArray {
+func CreateEmptyVertexArray(pType PrimitiveType) *VertexArray {
 	r := C.sfVertexArray_create()
 	C.sfVertexArray_setPrimitiveType(r, C.sfPrimitiveType(pType))
 	obj := &VertexArray{r}
@@ -23,7 +23,7 @@ func CreateVertexArray(pType PrimitiveType) *VertexArray {
 	return obj
 }
 
-func CreateVertexArrayFromSlice(vertices []Vertex, pType PrimitiveType) *VertexArray {
+func CreateVertexArray(vertices []Vertex, pType PrimitiveType) *VertexArray {
 	r := C.sfVertexArray_create()
 	for _, v := range vertices {
 		C.sfVertexArray_append(r, cVertex(&v))

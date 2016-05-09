@@ -15,14 +15,14 @@ func destroyRenderWindow(r *RenderWindow) {
 	C.sfRenderWindow_destroy(r.data)
 }
 
-func CreateRenderWindow(mode *VideoMode, title string, style WindowStyle, settings *ContextSettings) *RenderWindow {
+func CreateRenderWindow(mode VideoMode, title string, style WindowStyle, settings *ContextSettings) *RenderWindow {
 	cs := new(C.sfContextSettings)
 	if settings == nil {
 		cs = nil
 	} else {
 		*cs = cContextSettings(settings)
 	}
-	w := C.sfRenderWindow_createUnicode(cVideoMode(mode), cString(title), C.sfUint32(style), cs)
+	w := C.sfRenderWindow_createUnicode(cVideoMode(&mode), cString(title), C.sfUint32(style), cs)
 	obj := &RenderWindow{w}
 	runtime.SetFinalizer(obj, destroyRenderWindow)
 	return obj
@@ -171,28 +171,42 @@ func (w *RenderWindow) MapCoordsToPixel(point Vector2f, view *View) Vector2i {
 	return *goVector2i(&r)
 }
 
-func (w *RenderWindow) Draw(object Drawable, states *RenderStates) {
-	s := new(C.sfRenderStates)
-	if states == nil {
-		s = nil
-	} else {
-		*s = cRenderStates(states)
-	}
+func (w *RenderWindow) Draw(object Drawable) {
 	switch object.(type) {
 	case *Sprite:
-		C.sfRenderWindow_drawSprite(w.data, object.(*Sprite).data, s)
+		C.sfRenderWindow_drawSprite(w.data, object.(*Sprite).data, nil)
 	case *Text:
-		C.sfRenderWindow_drawText(w.data, object.(*Text).data, s)
+		C.sfRenderWindow_drawText(w.data, object.(*Text).data, nil)
 	case *Shape:
-		C.sfRenderWindow_drawShape(w.data, object.(*Shape).data, s)
+		C.sfRenderWindow_drawShape(w.data, object.(*Shape).data, nil)
 	case *CircleShape:
-		C.sfRenderWindow_drawCircleShape(w.data, object.(*CircleShape).data, s)
+		C.sfRenderWindow_drawCircleShape(w.data, object.(*CircleShape).data, nil)
 	case *ConvexShape:
-		C.sfRenderWindow_drawConvexShape(w.data, object.(*ConvexShape).data, s)
+		C.sfRenderWindow_drawConvexShape(w.data, object.(*ConvexShape).data, nil)
 	case *RectangleShape:
-		C.sfRenderWindow_drawRectangleShape(w.data, object.(*RectangleShape).data, s)
+		C.sfRenderWindow_drawRectangleShape(w.data, object.(*RectangleShape).data, nil)
 	case *VertexArray:
-		C.sfRenderWindow_drawVertexArray(w.data, object.(*VertexArray).data, s)
+		C.sfRenderWindow_drawVertexArray(w.data, object.(*VertexArray).data, nil)
+	}
+}
+
+func (w *RenderWindow) DrawWithRenderStates(object Drawable, states *RenderStates) {
+	s := cRenderStates(states)
+	switch object.(type) {
+	case *Sprite:
+		C.sfRenderWindow_drawSprite(w.data, object.(*Sprite).data, &s)
+	case *Text:
+		C.sfRenderWindow_drawText(w.data, object.(*Text).data, &s)
+	case *Shape:
+		C.sfRenderWindow_drawShape(w.data, object.(*Shape).data, &s)
+	case *CircleShape:
+		C.sfRenderWindow_drawCircleShape(w.data, object.(*CircleShape).data, &s)
+	case *ConvexShape:
+		C.sfRenderWindow_drawConvexShape(w.data, object.(*ConvexShape).data, &s)
+	case *RectangleShape:
+		C.sfRenderWindow_drawRectangleShape(w.data, object.(*RectangleShape).data, &s)
+	case *VertexArray:
+		C.sfRenderWindow_drawVertexArray(w.data, object.(*VertexArray).data, &s)
 	}
 }
 

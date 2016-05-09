@@ -26,26 +26,26 @@ func destroyText(t *Text) {
 	C.sfText_destroy(t.data)
 }
 
-func CreateText(font *Font) *Text {
+func CreateEmptyText() *Text {
 	c := C.sfText_create()
 	if c == nil {
 		return nil
 	}
-	C.sfText_setFont(c, font.data)
-	obj := &Text{c, font}
+	obj := &Text{data: c}
 	runtime.SetFinalizer(obj, destroyText)
 	return obj
 }
 
-func CreateTextFromString(text string, font *Font) *Text {
+func CreateText(text string, font *Font, size uint) *Text {
 	c := C.sfText_create()
 	if c == nil {
 		return nil
 	}
 	C.sfText_setFont(c, font.data)
+	C.sfText_setUnicodeString(c, cString(text))
+	C.sfText_setCharacterSize(c, C.uint(size))
 	obj := &Text{c, font}
 	runtime.SetFinalizer(obj, destroyText)
-	C.sfText_setUnicodeString(c, cString(text))
 	return obj
 }
 
@@ -119,7 +119,7 @@ func (t *Text) SetString(text string) {
 
 func (t *Text) GetString() string {
 	r := C.sfText_getString(t.data)
-	return 	C.GoString(r)
+	return C.GoString(r)
 }
 
 func (t *Text) SetFont(font *Font) {

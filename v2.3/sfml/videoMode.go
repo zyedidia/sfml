@@ -10,24 +10,24 @@ type VideoMode struct {
 	BitsPerPixel uint
 }
 
-func GetDesktopMode() *VideoMode {
+func GetDesktopMode() VideoMode {
 	v := C.sfVideoMode_getDesktopMode()
-	return goVideoMode(&v)
+	return *goVideoMode(&v)
 }
 
-func GetFullscreenModes() []*VideoMode {
+func GetFullscreenModes() []VideoMode {
 	var count C.size_t
 	modes := C.sfVideoMode_getFullscreenModes(&count)
-	vms := make([]*VideoMode, count)
+	vms := make([]VideoMode, count)
 	for i := 0; i < int(count); i++ {
 		v := C.GetVideoModeAtIndex(modes, C.int(i))
-		vms = append(vms, goVideoMode(&v))
+		vms = append(vms, *goVideoMode(&v))
 	}
 	return vms
 }
 
-func (v *VideoMode) IsValid() bool {
-	return goBool(C.sfVideoMode_isValid(cVideoMode(v)))
+func (v VideoMode) IsValid() bool {
+	return goBool(C.sfVideoMode_isValid(cVideoMode(&v)))
 }
 
 func goVideoMode(vm *C.sfVideoMode) *VideoMode {

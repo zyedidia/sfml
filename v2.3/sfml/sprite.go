@@ -16,7 +16,7 @@ func destroySprite(s *Sprite) {
 	C.sfSprite_destroy(s.data)
 }
 
-func CreateSprite() *Sprite {
+func CreateEmptySprite() *Sprite {
 	s := C.sfSprite_create()
 	if s == nil {
 		return nil
@@ -26,12 +26,24 @@ func CreateSprite() *Sprite {
 	return obj
 }
 
-func CreateSpriteFromTexture(texture *Texture) *Sprite {
+func CreateSprite(texture *Texture) *Sprite {
 	s := C.sfSprite_create()
 	if s == nil {
 		return nil
 	}
 	C.sfSprite_setTexture(s, texture.data, C.sfTrue)
+	obj := &Sprite{s, texture}
+	runtime.SetFinalizer(obj, destroySprite)
+	return obj
+}
+
+func CreateSpriteFromRect(texture *Texture, rectangle Recti) *Sprite {
+	s := C.sfSprite_create()
+	if s == nil {
+		return nil
+	}
+	C.sfSprite_setTexture(s, texture.data, C.sfTrue)
+	C.sfSprite_setTextureRect(s, cRecti(&rectangle))
 	obj := &Sprite{s, texture}
 	runtime.SetFinalizer(obj, destroySprite)
 	return obj

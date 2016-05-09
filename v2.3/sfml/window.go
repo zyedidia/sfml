@@ -43,14 +43,14 @@ func destroyWindow(w *Window) {
 	C.sfWindow_destroy(w.data)
 }
 
-func CreateWindow(mode *VideoMode, title string, style WindowStyle, settings *ContextSettings) *Window {
+func CreateWindow(mode VideoMode, title string, style WindowStyle, settings *ContextSettings) *Window {
 	cs := new(C.sfContextSettings)
 	if settings == nil {
 		cs = nil
 	} else {
 		*cs = cContextSettings(settings)
 	}
-	w := C.sfWindow_createUnicode(cVideoMode(mode), cString(title), C.sfUint32(style), cs)
+	w := C.sfWindow_createUnicode(cVideoMode(&mode), cString(title), C.sfUint32(style), cs)
 	obj := &Window{w}
 	runtime.SetFinalizer(obj, destroyWindow)
 	return obj
