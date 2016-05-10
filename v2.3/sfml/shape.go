@@ -16,7 +16,7 @@ func destroyShape(s *Shape) {
 	C.sfShape_destroy(s.data)
 }
 
-// FIXME
+// FIXME: Figure out a way to do this properly
 func CreateShape() *Shape {
 	s := C.sfShape_create(nil, nil, nil)
 	if s == nil {

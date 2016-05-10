@@ -104,8 +104,6 @@ func (i *Image) GetPixel(x, y uint) Color {
 	return *goColor(&r)
 }
 
-//FIXME: getPixelsPointer
-
 func (i *Image) FlipHorizontally() {
 	C.sfImage_flipHorizontally(i.data)
 }
