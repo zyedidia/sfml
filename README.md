@@ -35,7 +35,14 @@ Example
 ```Go
 package main
 
-import "gitlab.com/tapir/sfml/v2.3/sfml"
+import (
+    "gitlab.com/tapir/sfml/v2.3/sfml"
+    "runtime"
+)
+
+func init() {
+	runtime.LockOSThread()
+}
 
 func main() {
 	window := sfml.CreateRenderWindow(sfml.VideoMode{800, 600, 32}, "Test", sfml.StyleDefaultStyle, nil)
