@@ -59,7 +59,7 @@ func (t *Transformable) GetScale() Vector2f {
 	return *goVector2f(&r)
 }
 
-func (t *Transformable) GetOrigin() (origin Vector2f) {
+func (t *Transformable) GetOrigin() Vector2f {
 	r := C.sfTransformable_getOrigin(t.data)
 	return *goVector2f(&r)
 }

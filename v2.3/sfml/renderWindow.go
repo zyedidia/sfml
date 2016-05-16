@@ -185,8 +185,6 @@ func (r *RenderWindow) Draw(object Drawable) {
 		C.sfRenderWindow_drawConvexShape(r.data, object.(*ConvexShape).data, nil)
 	case *RectangleShape:
 		C.sfRenderWindow_drawRectangleShape(r.data, object.(*RectangleShape).data, nil)
-	case *VertexArray:
-		C.sfRenderWindow_drawVertexArray(r.data, object.(*VertexArray).data, nil)
 	}
 }
 
@@ -205,9 +203,17 @@ func (r *RenderWindow) DrawWithRenderStates(object Drawable, states *RenderState
 		C.sfRenderWindow_drawConvexShape(r.data, object.(*ConvexShape).data, &s)
 	case *RectangleShape:
 		C.sfRenderWindow_drawRectangleShape(r.data, object.(*RectangleShape).data, &s)
-	case *VertexArray:
-		C.sfRenderWindow_drawVertexArray(r.data, object.(*VertexArray).data, &s)
 	}
+
+}
+
+func (r *RenderWindow) DrawVertexArray(object *VertexArray) {
+	C.sfRenderWindow_drawVertexArray(r.data, object.data, nil)
+}
+
+func (r *RenderWindow) DrawVertexArrayWithRenderStates(object *VertexArray, states *RenderStates) {
+	s := cRenderStates(states)
+	C.sfRenderWindow_drawVertexArray(r.data, object.data, &s)
 }
 
 func (r *RenderWindow) PushGLStates() {

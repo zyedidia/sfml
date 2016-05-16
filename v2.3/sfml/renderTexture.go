@@ -83,8 +83,6 @@ func (r *RenderTexture) Draw(object Drawable) {
 		C.sfRenderTexture_drawConvexShape(r.data, object.(*ConvexShape).data, nil)
 	case *RectangleShape:
 		C.sfRenderTexture_drawRectangleShape(r.data, object.(*RectangleShape).data, nil)
-	case *VertexArray:
-		C.sfRenderTexture_drawVertexArray(r.data, object.(*VertexArray).data, nil)
 	}
 }
 
@@ -103,9 +101,16 @@ func (r *RenderTexture) DrawWithRenderStates(object Drawable, states *RenderStat
 		C.sfRenderTexture_drawConvexShape(r.data, object.(*ConvexShape).data, &s)
 	case *RectangleShape:
 		C.sfRenderTexture_drawRectangleShape(r.data, object.(*RectangleShape).data, &s)
-	case *VertexArray:
-		C.sfRenderTexture_drawVertexArray(r.data, object.(*VertexArray).data, &s)
 	}
+}
+
+func (r *RenderTexture) DrawVertexArray(object *VertexArray) {
+	C.sfRenderTexture_drawVertexArray(r.data, object.data, nil)
+}
+
+func (r *RenderTexture) DrawVertexArrayWithRenderStates(object *VertexArray, states *RenderStates) {
+	s := cRenderStates(states)
+	C.sfRenderTexture_drawVertexArray(r.data, object.data, &s)
 }
 
 func (r *RenderTexture) PushGLStates() {
