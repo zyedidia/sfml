@@ -28,7 +28,7 @@ Status
 
 Example
 ------------
-```Go
+```go
 package main
 
 import (
