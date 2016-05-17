@@ -24,7 +24,7 @@ Status
 * **Audio module:** 60% implemented
 * **Network module:** Won't be implemented. Use Go standard library instead.
 * **System module:** Won't be implemented. Use Go standard library instead.
-* Due to Go timer functions having low resolution on Windows, you can use [utime](https://godoc.org/gitlab.com/tapir/utime).
+* Due to Go timer functions having low resolution on Windows, you can use [utime](https://gitlab.com/tapir/utime).
 
 Example
 ------------
