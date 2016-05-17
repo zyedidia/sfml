@@ -24,6 +24,138 @@ type Vector3f struct {
 	Z float32
 }
 
+func (v Vector2i) IsEqual(vector Vector2i) bool {
+	return v.X == vector.X && v.Y == vector.Y
+}
+
+func (v Vector2i) Multiply(vector Vector2i) Vector2i {
+	return Vector2i{
+		v.X * vector.X,
+		v.Y * vector.Y,
+	}
+}
+
+func (v Vector2i) Divide(vector Vector2i) Vector2i {
+	return Vector2i{
+		v.X / vector.X,
+		v.Y / vector.Y,
+	}
+}
+
+func (v Vector2i) Add(vector Vector2i) Vector2i {
+	return Vector2i{
+		v.X + vector.X,
+		v.Y + vector.Y,
+	}
+}
+
+func (v Vector2i) Subtract(vector Vector2i) Vector2i {
+	return Vector2i{
+		v.X - vector.X,
+		v.Y - vector.Y,
+	}
+}
+
+func (v Vector2u) IsEqual(vector Vector2u) bool {
+	return v.X == vector.X && v.Y == vector.Y
+}
+
+func (v Vector2u) Multiply(vector Vector2u) Vector2u {
+	return Vector2u{
+		v.X * vector.X,
+		v.Y * vector.Y,
+	}
+}
+
+func (v Vector2u) Divide(vector Vector2u) Vector2u {
+	return Vector2u{
+		v.X / vector.X,
+		v.Y / vector.Y,
+	}
+}
+
+func (v Vector2u) Add(vector Vector2u) Vector2u {
+	return Vector2u{
+		v.X + vector.X,
+		v.Y + vector.Y,
+	}
+}
+
+func (v Vector2u) Subtract(vector Vector2u) Vector2u {
+	return Vector2u{
+		v.X - vector.X,
+		v.Y - vector.Y,
+	}
+}
+
+func (v Vector2f) IsEqual(vector Vector2f) bool {
+	return v.X == vector.X && v.Y == vector.Y
+}
+
+func (v Vector2f) Multiply(vector Vector2f) Vector2f {
+	return Vector2f{
+		v.X * vector.X,
+		v.Y * vector.Y,
+	}
+}
+
+func (v Vector2f) Divide(vector Vector2f) Vector2f {
+	return Vector2f{
+		v.X / vector.X,
+		v.Y / vector.Y,
+	}
+}
+
+func (v Vector2f) Add(vector Vector2f) Vector2f {
+	return Vector2f{
+		v.X + vector.X,
+		v.Y + vector.Y,
+	}
+}
+
+func (v Vector2f) Subtract(vector Vector2f) Vector2f {
+	return Vector2f{
+		v.X - vector.X,
+		v.Y - vector.Y,
+	}
+}
+
+func (v Vector3f) IsEqual(vector Vector3f) bool {
+	return v.X == vector.X && v.Y == vector.Y && v.Z == vector.Z
+}
+
+func (v Vector3f) Multiply(vector Vector3f) Vector3f {
+	return Vector3f{
+		v.X * vector.X,
+		v.Y * vector.Y,
+		v.Z * vector.Z,
+	}
+}
+
+func (v Vector3f) Divide(vector Vector3f) Vector3f {
+	return Vector3f{
+		v.X / vector.X,
+		v.Y / vector.Y,
+		v.Z / vector.Z,
+	}
+}
+
+func (v Vector3f) Add(vector Vector3f) Vector3f {
+	return Vector3f{
+		v.X + vector.X,
+		v.Y + vector.Y,
+		v.Z + vector.Z,
+	}
+}
+
+func (v Vector3f) Subtract(vector Vector3f) Vector3f {
+	return Vector3f{
+		v.X - vector.X,
+		v.Y - vector.Y,
+		v.Z - vector.Z,
+	}
+}
+
 func goVector2i(v *C.sfVector2i) *Vector2i {
 	return &Vector2i{
 		int(v.x),
