@@ -3,7 +3,10 @@ package sfml
 //#include <SFML/Audio.h>
 //#include <stdlib.h>
 import "C"
-import "runtime"
+
+import (
+	"runtime"
+)
 
 type Sound struct {
 	data *C.sfSound

@@ -47,8 +47,8 @@ func (m *Music) GetLoop() bool {
 	return goBool(C.sfMusic_getLoop(m.data))
 }
 
-func (m *Music) GetDuration() uint {
-	return uint(C.sfMusic_getDuration(m.data).microseconds)
+func (m *Music) GetDuration() int64 {
+	return int64(C.sfMusic_getDuration(m.data).microseconds)
 }
 
 func (m *Music) Play() {
