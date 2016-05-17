@@ -45,12 +45,12 @@ func init() {
 }
 
 func main() {
-	window := sfml.CreateRenderWindow(sfml.VideoMode{800, 600, 32}, "Test", sfml.StyleDefaultStyle, nil)
-	texture := sfml.CreateTexture("test.png")
-	sprite := sfml.CreateSprite(texture)
-	font := sfml.CreateFont("arial.ttf")
-	text := sfml.CreateText("Hello SFML", font, 50)
-	
+	window := sfml.NewRenderWindow(sfml.VideoMode{800, 600, 32}, "Test", sfml.StyleDefaultStyle, nil)
+	texture := sfml.NewTexture("test.png")
+	sprite := sfml.NewSprite(texture)
+	font := sfml.NewFont("arial.ttf")
+	text := sfml.NewText("Hello SFML", font, 50)
+
 	for window.IsOpen() {
 		if event := window.PollEvent(); event != nil {
 			switch event.Type {
