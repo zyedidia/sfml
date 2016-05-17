@@ -17,6 +17,16 @@ type Recti struct {
 	Height int
 }
 
+func (r Recti) IsEqual(rect Recti) bool {
+	return r.Left == rect.Left && r.Top == rect.Top &&
+		r.Width == rect.Width && r.Height == rect.Height
+}
+
+func (r Rectf) IsEqual(rect Rectf) bool {
+	return r.Left == rect.Left && r.Top == rect.Top &&
+		r.Width == rect.Width && r.Height == rect.Height
+}
+
 func (f Rectf) Contains(point Vector2f) bool {
 	rect := cRectf(&f)
 	return goBool(C.sfFloatRect_contains(&rect, C.float(point.X), C.float(point.Y)))

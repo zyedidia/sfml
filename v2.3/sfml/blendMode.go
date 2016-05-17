@@ -68,6 +68,15 @@ type BlendMode struct {
 	AlphaEquation  BlendEquation
 }
 
+func (b BlendMode) IsEqual(blendMode BlendMode) bool {
+	return b.ColorSrcFactor == blendMode.ColorSrcFactor &&
+		b.ColorDstFactor == blendMode.ColorDstFactor &&
+		b.ColorEquation == blendMode.ColorEquation &&
+		b.AlphaSrcFactor == blendMode.AlphaSrcFactor &&
+		b.AlphaDstFactor == blendMode.AlphaDstFactor &&
+		b.AlphaEquation == blendMode.AlphaEquation
+}
+
 func goBlendMode(b *C.sfBlendMode) *BlendMode {
 	return &BlendMode{
 		BlendFactor(b.colorSrcFactor),
