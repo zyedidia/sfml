@@ -21,7 +21,7 @@ Status
 ---------
 * **Window module:** 100% implemented
 * **Graphics module:** 99% implemented
-* **Audio module:** 60% implemented
+* **Audio module:** 80% implemented
 * **Network module:** Won't be implemented. Use Go standard library instead.
 * **System module:** Won't be implemented. Use Go standard library instead.
 * Due to Go timer functions having low resolution on Windows, you can use [utime](https://gitlab.com/tapir/utime).
@@ -46,6 +46,8 @@ func main() {
 	sprite := sfml.NewSprite(texture)
 	font := sfml.NewFont("arial.ttf")
 	text := sfml.NewText("Hello SFML", font, 50)
+    music := sfml.NewMusic("test.ogg")
+    music.Play()
 
 	for window.IsOpen() {
 		if event := window.PollEvent(); event != nil {
