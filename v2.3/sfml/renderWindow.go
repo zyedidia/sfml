@@ -177,8 +177,8 @@ func (r *RenderWindow) Draw(object Drawable) {
 		C.sfRenderWindow_drawSprite(r.data, object.(*Sprite).data, nil)
 	case *Text:
 		C.sfRenderWindow_drawText(r.data, object.(*Text).data, nil)
-	case *Shape:
-		C.sfRenderWindow_drawShape(r.data, object.(*Shape).data, nil)
+	/*case *Shape:
+	C.sfRenderWindow_drawShape(r.data, object.(*Shape).data, nil)*/
 	case *CircleShape:
 		C.sfRenderWindow_drawCircleShape(r.data, object.(*CircleShape).data, nil)
 	case *ConvexShape:
@@ -195,8 +195,8 @@ func (r *RenderWindow) DrawWithRenderStates(object Drawable, states *RenderState
 		C.sfRenderWindow_drawSprite(r.data, object.(*Sprite).data, &s)
 	case *Text:
 		C.sfRenderWindow_drawText(r.data, object.(*Text).data, &s)
-	case *Shape:
-		C.sfRenderWindow_drawShape(r.data, object.(*Shape).data, &s)
+	/*case *Shape:
+	C.sfRenderWindow_drawShape(r.data, object.(*Shape).data, &s)*/
 	case *CircleShape:
 		C.sfRenderWindow_drawCircleShape(r.data, object.(*CircleShape).data, &s)
 	case *ConvexShape:

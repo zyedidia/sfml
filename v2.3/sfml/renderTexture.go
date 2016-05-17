@@ -75,8 +75,8 @@ func (r *RenderTexture) Draw(object Drawable) {
 		C.sfRenderTexture_drawSprite(r.data, object.(*Sprite).data, nil)
 	case *Text:
 		C.sfRenderTexture_drawText(r.data, object.(*Text).data, nil)
-	case *Shape:
-		C.sfRenderTexture_drawShape(r.data, object.(*Shape).data, nil)
+	/*case *Shape:
+	C.sfRenderTexture_drawShape(r.data, object.(*Shape).data, nil)*/
 	case *CircleShape:
 		C.sfRenderTexture_drawCircleShape(r.data, object.(*CircleShape).data, nil)
 	case *ConvexShape:
@@ -93,8 +93,8 @@ func (r *RenderTexture) DrawWithRenderStates(object Drawable, states *RenderStat
 		C.sfRenderTexture_drawSprite(r.data, object.(*Sprite).data, &s)
 	case *Text:
 		C.sfRenderTexture_drawText(r.data, object.(*Text).data, &s)
-	case *Shape:
-		C.sfRenderTexture_drawShape(r.data, object.(*Shape).data, &s)
+	/*case *Shape:
+	C.sfRenderTexture_drawShape(r.data, object.(*Shape).data, &s)*/
 	case *CircleShape:
 		C.sfRenderTexture_drawCircleShape(r.data, object.(*CircleShape).data, &s)
 	case *ConvexShape:

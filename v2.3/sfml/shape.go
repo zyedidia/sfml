@@ -1,5 +1,6 @@
 package sfml
 
+/*
 //#include <SFML/Graphics.h>
 import "C"
 
@@ -169,3 +170,4 @@ func (s *Shape) DrawWithRenderStates(target RenderTarget, states *RenderStates) 
 		C.sfRenderWindow_drawShape(target.(*RenderWindow).data, s.data, &ss)
 	}
 }
+*/
