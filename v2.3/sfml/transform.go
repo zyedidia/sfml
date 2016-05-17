@@ -4,7 +4,7 @@ package sfml
 //#include "transform.h"
 import "C"
 
-var TransformIdentity Transform = *goTransform(&C.sfTransform_Identity)
+var TransformIdentity = Transform{1, 0, 0, 0, 1, 0, 0, 0, 1}
 
 type Transform [9]float32
 type Matrix [16]float32

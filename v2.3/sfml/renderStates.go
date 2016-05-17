@@ -10,13 +10,11 @@ type RenderStates struct {
 	Shader    *Shader
 }
 
-func CreateDefaultRenderStates() *RenderStates {
-	return &RenderStates{
-		BlendAlpha,
-		TransformIdentity,
-		nil,
-		nil,
-	}
+var DefaultRenderState = &RenderStates{
+	BlendAlpha,
+	TransformIdentity,
+	nil,
+	nil,
 }
 
 func cRenderStates(r *RenderStates) C.sfRenderStates {
