@@ -6,7 +6,7 @@ Go Binding for SFML [[Doc]](https://godoc.org/gitlab.com/tapir/sfml/v2.3/sfml)
 * Class deconstructors are called automatically with ***runtime.SetFinalizer***
 * Types like ***Rect***, ***Vector*** and ***Color*** are passed by value.
 * Generic types are implemented with the designation of the type at the end like ***Recti***, ***Rectf***, ***Vector2f*** etc...
-*  Enumarations are upper camel case.
+* Enumarations are upper camel case.
 * Interfaces are used when possible to make functions like ***draw*** more generic.
 * Only unicode version of the same functions are used.
 * Functions return ***nil*** when there is an error because SFML doesn't have error messages.
@@ -21,14 +21,10 @@ Status
 ---------
 * **Window module:** 100% implemented
 * **Graphics module:** 99% implemented
-* **Audio module:** 0% implemented
+* **Audio module:** 60% implemented
 * **Network module:** Won't be implemented. Use Go standard library instead.
 * **System module:** Won't be implemented. Use Go standard library instead.
-
-Known Issues
--------------------
-* ***Shape*** class needs a proper callback implementation.
-* ***Image*** class needs a ***getPixelsPtr*** implementation.
+* Due to Go timer functions having low resolution on Windows, you can use [utime](https://godoc.org/gitlab.com/tapir/utime).
 
 Example
 ------------
