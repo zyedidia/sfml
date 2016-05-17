@@ -22,10 +22,38 @@ const (
 )
 
 var (
-	BlendAlpha    = *goBlendMode(&C.sfBlendAlpha)
-	BlendAdd      = *goBlendMode(&C.sfBlendAdd)
-	BlendMultiply = *goBlendMode(&C.sfBlendMultiply)
-	BlendNone     = *goBlendMode(&C.sfBlendNone)
+	BlendAlpha = BlendMode{
+		FactorSrcAlpha,
+		FactorOneMinusSrcAlpha,
+		EquationAdd,
+		FactorOne,
+		FactorOneMinusSrcAlpha,
+		EquationAdd,
+	}
+	BlendAdd = BlendMode{
+		FactorSrcAlpha,
+		FactorOne,
+		EquationAdd,
+		FactorOne,
+		FactorOne,
+		EquationAdd,
+	}
+	BlendMultiply = BlendMode{
+		FactorDstColor,
+		FactorZero,
+		EquationAdd,
+		FactorDstColor,
+		FactorZero,
+		EquationAdd,
+	}
+	BlendNone = BlendMode{
+		FactorOne,
+		FactorZero,
+		EquationAdd,
+		FactorOne,
+		FactorZero,
+		EquationAdd,
+	}
 )
 
 type BlendFactor int
