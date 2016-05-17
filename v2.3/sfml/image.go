@@ -17,7 +17,7 @@ func destroyImage(i *Image) {
 	C.sfImage_destroy(i.data)
 }
 
-func CreateImage(filename string) *Image {
+func NewImage(filename string) *Image {
 	file := C.CString(filename)
 	defer C.free(unsafe.Pointer(file))
 	i := C.sfImage_createFromFile(file)
@@ -29,7 +29,7 @@ func CreateImage(filename string) *Image {
 	return obj
 }
 
-func CreateEmptyImage(width, height uint) *Image {
+func NewEmptyImage(width, height uint) *Image {
 	i := C.sfImage_create(C.uint(width), C.uint(height))
 	if i == nil {
 		return nil
@@ -39,7 +39,7 @@ func CreateEmptyImage(width, height uint) *Image {
 	return obj
 }
 
-func CreateEmptyImageFromColor(width, height uint, color Color) *Image {
+func NewEmptyImageFromColor(width, height uint, color Color) *Image {
 	i := C.sfImage_createFromColor(C.uint(width), C.uint(height), cColor(&color))
 	if i == nil {
 		return nil
@@ -49,7 +49,7 @@ func CreateEmptyImageFromColor(width, height uint, color Color) *Image {
 	return obj
 }
 
-func CreateEmptyImageFromPixels(width, height uint, data []byte) *Image {
+func NewEmptyImageFromPixels(width, height uint, data []byte) *Image {
 	i := C.sfImage_createFromPixels(C.uint(width), C.uint(height), (*C.sfUint8)(&data[0]))
 	if i == nil {
 		return nil
@@ -59,7 +59,7 @@ func CreateEmptyImageFromPixels(width, height uint, data []byte) *Image {
 	return obj
 }
 
-func CreateImageFromMemory(data []byte) *Image {
+func NewImageFromMemory(data []byte) *Image {
 	i := C.sfImage_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)))
 	if i == nil {
 		return nil

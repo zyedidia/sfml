@@ -16,7 +16,7 @@ func destroyRectangleShape(r *RectangleShape) {
 	C.sfRectangleShape_destroy(r.data)
 }
 
-func CreateEmptyRectangleShape() *RectangleShape {
+func NewEmptyRectangleShape() *RectangleShape {
 	r := C.sfRectangleShape_create()
 	if r == nil {
 		return nil
@@ -26,7 +26,7 @@ func CreateEmptyRectangleShape() *RectangleShape {
 	return obj
 }
 
-func CreateRectangleShape(size Vector2f) *RectangleShape {
+func NewRectangleShape(size Vector2f) *RectangleShape {
 	r := C.sfRectangleShape_create()
 	if r == nil {
 		return nil

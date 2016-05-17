@@ -15,7 +15,7 @@ func destroyTransformable(t *Transformable) {
 	C.sfTransformable_destroy(t.data)
 }
 
-func CreateTransformable() *Transformable {
+func NewTransformable() *Transformable {
 	r := C.sfTransformable_create()
 	obj := &Transformable{r}
 	runtime.SetFinalizer(obj, destroyTransformable)

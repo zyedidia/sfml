@@ -26,7 +26,7 @@ func destroyText(t *Text) {
 	C.sfText_destroy(t.data)
 }
 
-func CreateEmptyText() *Text {
+func NewEmptyText() *Text {
 	c := C.sfText_create()
 	if c == nil {
 		return nil
@@ -36,7 +36,7 @@ func CreateEmptyText() *Text {
 	return obj
 }
 
-func CreateText(text string, font *Font, size uint) *Text {
+func NewText(text string, font *Font, size uint) *Text {
 	c := C.sfText_create()
 	if c == nil {
 		return nil

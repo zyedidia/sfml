@@ -15,7 +15,7 @@ func destroyContext(c *Context) {
 	C.sfContext_destroy(c.data)
 }
 
-func CreateContext() *Context {
+func NewContext() *Context {
 	c := C.sfContext_create()
 	obj := &Context{c}
 	runtime.SetFinalizer(obj, destroyContext)

@@ -15,14 +15,14 @@ func destroyView(v *View) {
 	C.sfView_destroy(v.data)
 }
 
-func CreateView() *View {
+func NewView() *View {
 	v := C.sfView_create()
 	obj := &View{v}
 	runtime.SetFinalizer(obj, destroyView)
 	return obj
 }
 
-func CreateViewFromRect(rect Rectf) *View {
+func NewViewFromRect(rect Rectf) *View {
 	v := C.sfView_createFromRect(cRectf(&rect))
 	obj := &View{v}
 	runtime.SetFinalizer(obj, destroyView)

@@ -16,7 +16,7 @@ func destroySprite(s *Sprite) {
 	C.sfSprite_destroy(s.data)
 }
 
-func CreateEmptySprite() *Sprite {
+func NewEmptySprite() *Sprite {
 	s := C.sfSprite_create()
 	if s == nil {
 		return nil
@@ -26,7 +26,7 @@ func CreateEmptySprite() *Sprite {
 	return obj
 }
 
-func CreateSprite(texture *Texture) *Sprite {
+func NewSprite(texture *Texture) *Sprite {
 	s := C.sfSprite_create()
 	if s == nil {
 		return nil
@@ -37,7 +37,7 @@ func CreateSprite(texture *Texture) *Sprite {
 	return obj
 }
 
-func CreateSpriteFromRect(texture *Texture, rectangle Recti) *Sprite {
+func NewSpriteFromRect(texture *Texture, rectangle Recti) *Sprite {
 	s := C.sfSprite_create()
 	if s == nil {
 		return nil

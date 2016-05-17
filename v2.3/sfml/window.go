@@ -43,7 +43,7 @@ func destroyWindow(w *Window) {
 	C.sfWindow_destroy(w.data)
 }
 
-func CreateWindow(mode VideoMode, title string, style WindowStyle, settings *ContextSettings) *Window {
+func NewWindow(mode VideoMode, title string, style WindowStyle, settings *ContextSettings) *Window {
 	cs := new(C.sfContextSettings)
 	if settings == nil {
 		cs = nil
@@ -56,7 +56,7 @@ func CreateWindow(mode VideoMode, title string, style WindowStyle, settings *Con
 	return obj
 }
 
-func CreateWindowFromHandle(handle WindowHandle, settings *ContextSettings) *Window {
+func NewWindowFromHandle(handle WindowHandle, settings *ContextSettings) *Window {
 	cs := new(C.sfContextSettings)
 	if settings == nil {
 		cs = nil

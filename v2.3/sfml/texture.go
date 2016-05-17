@@ -17,7 +17,7 @@ func destroyTexture(t *Texture) {
 	C.sfTexture_destroy(t.data)
 }
 
-func CreateEmptyTexture(width, height uint) *Texture {
+func NewEmptyTexture(width, height uint) *Texture {
 	c := C.sfTexture_create(C.uint(width), C.uint(height))
 	if c == nil {
 		return nil
@@ -27,7 +27,7 @@ func CreateEmptyTexture(width, height uint) *Texture {
 	return obj
 }
 
-func CreateTexture(filename string) *Texture {
+func NewTexture(filename string) *Texture {
 	file := C.CString(filename)
 	defer C.free(unsafe.Pointer(file))
 	c := C.sfTexture_createFromFile(file, nil)
@@ -39,7 +39,7 @@ func CreateTexture(filename string) *Texture {
 	return obj
 }
 
-func CreateTextureFromMemory(data []byte) *Texture {
+func NewTextureFromMemory(data []byte) *Texture {
 	c := C.sfTexture_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)), nil)
 	if c == nil {
 		return nil
@@ -49,7 +49,7 @@ func CreateTextureFromMemory(data []byte) *Texture {
 	return obj
 }
 
-func CreateTextureFromImage(image *Image) *Texture {
+func NewTextureFromImage(image *Image) *Texture {
 	c := C.sfTexture_createFromImage(image.data, nil)
 	if c == nil {
 		return nil

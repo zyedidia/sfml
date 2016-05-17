@@ -17,7 +17,7 @@ func destroyShader(s *Shader) {
 	C.sfShader_destroy(s.data)
 }
 
-func CreateShader(vertexShaderFilename, fragmentShaderFilename string) *Shader {
+func NewShader(vertexShaderFilename, fragmentShaderFilename string) *Shader {
 	vshader := C.CString(vertexShaderFilename)
 	defer C.free(unsafe.Pointer(vshader))
 	fshader := C.CString(fragmentShaderFilename)
@@ -31,7 +31,7 @@ func CreateShader(vertexShaderFilename, fragmentShaderFilename string) *Shader {
 	return obj
 }
 
-func CreateShaderFromMemory(vertexShader, fragmentShader string) *Shader {
+func NewShaderFromMemory(vertexShader, fragmentShader string) *Shader {
 	vshader := C.CString(vertexShader)
 	defer C.free(unsafe.Pointer(vshader))
 	fshader := C.CString(fragmentShader)

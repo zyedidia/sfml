@@ -16,7 +16,7 @@ func destroyConvexShape(c *ConvexShape) {
 	C.sfConvexShape_destroy(c.data)
 }
 
-func CreateEmptyConvexShape() *ConvexShape {
+func NewEmptyConvexShape() *ConvexShape {
 	c := C.sfConvexShape_create()
 	if c == nil {
 		return nil
@@ -26,7 +26,7 @@ func CreateEmptyConvexShape() *ConvexShape {
 	return obj
 }
 
-func CreateConvexShape(pointCount uint) *ConvexShape {
+func NewConvexShape(pointCount uint) *ConvexShape {
 	c := C.sfConvexShape_create()
 	if c == nil {
 		return nil

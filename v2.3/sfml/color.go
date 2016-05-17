@@ -22,7 +22,7 @@ type Color struct {
 	A uint8
 }
 
-func CreateColorFromInteger(color uint) Color {
+func NewColorFromInteger(color uint) Color {
 	r := C.sfColor_fromInteger(C.sfUint32(color))
 	return *goColor(&r)
 }

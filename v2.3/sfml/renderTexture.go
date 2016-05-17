@@ -15,7 +15,7 @@ func destroyRenderTexture(t *Texture) {
 	C.sfRenderTexture_destroy(t.data)
 }
 
-func CreateRenderTexture(width, height uint, depthBuffer bool) *RenderTexture {
+func NewRenderTexture(width, height uint, depthBuffer bool) *RenderTexture {
 	r := C.sfRenderTexture_create(C.uint(width), C.uint(height), cBool(depthBuffer))
 	if r == nil {
 		return nil

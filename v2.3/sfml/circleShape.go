@@ -16,7 +16,7 @@ func destroyCircleShape(c *CircleShape) {
 	C.sfCircleShape_destroy(c.data)
 }
 
-func CreateEmptyCircleShape() *CircleShape {
+func NewEmptyCircleShape() *CircleShape {
 	c := C.sfCircleShape_create()
 	if c == nil {
 		return nil
@@ -26,7 +26,7 @@ func CreateEmptyCircleShape() *CircleShape {
 	return obj
 }
 
-func CreateCircleShape(radius float32, pointCount uint) *CircleShape {
+func NewCircleShape(radius float32, pointCount uint) *CircleShape {
 	c := C.sfCircleShape_create()
 	if c == nil {
 		return nil

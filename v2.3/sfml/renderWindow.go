@@ -15,7 +15,7 @@ func destroyRenderWindow(r *RenderWindow) {
 	C.sfRenderWindow_destroy(r.data)
 }
 
-func CreateRenderWindow(mode VideoMode, title string, style WindowStyle, settings *ContextSettings) *RenderWindow {
+func NewRenderWindow(mode VideoMode, title string, style WindowStyle, settings *ContextSettings) *RenderWindow {
 	cs := new(C.sfContextSettings)
 	if settings == nil {
 		cs = nil
@@ -28,7 +28,7 @@ func CreateRenderWindow(mode VideoMode, title string, style WindowStyle, setting
 	return obj
 }
 
-func CreateRenderWindowFromHandle(handle WindowHandle, settings *ContextSettings) *RenderWindow {
+func NewRenderWindowFromHandle(handle WindowHandle, settings *ContextSettings) *RenderWindow {
 	cs := new(C.sfContextSettings)
 	if settings == nil {
 		cs = nil

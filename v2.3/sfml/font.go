@@ -17,7 +17,7 @@ func destroyFont(f *Font) {
 	C.sfFont_destroy(f.data)
 }
 
-func CreateFont(filename string) *Font {
+func NewFont(filename string) *Font {
 	file := C.CString(filename)
 	defer C.free(unsafe.Pointer(file))
 	f := C.sfFont_createFromFile(file)
@@ -29,7 +29,7 @@ func CreateFont(filename string) *Font {
 	return obj
 }
 
-func CreateFontFromMemory(data []byte) *Font {
+func NewFontFromMemory(data []byte) *Font {
 	f := C.sfFont_createFromMemory(unsafe.Pointer(&data[0]), C.size_t(len(data)))
 	if f == nil {
 		return nil
