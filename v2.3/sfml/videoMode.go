@@ -30,6 +30,11 @@ func (v VideoMode) IsValid() bool {
 	return goBool(C.sfVideoMode_isValid(cVideoMode(&v)))
 }
 
+func (v VideoMode) IsEqual(videoMode VideoMode) bool {
+	return v.Width == videoMode.Width && v.Height == videoMode.Height &&
+		v.BitsPerPixel == videoMode.BitsPerPixel
+}
+
 func goVideoMode(vm *C.sfVideoMode) *VideoMode {
 	return &VideoMode{
 		uint(vm.width),
