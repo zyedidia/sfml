@@ -41,7 +41,7 @@ func init() {
 }
 
 func main() {
-	window := sfml.NewRenderWindow(sfml.VideoMode{800, 600, 32}, "Test", sfml.StyleDefaultStyle, nil)
+	window := sfml.NewRenderWindow(sfml.VideoMode{800, 600, 32}, "Test", sfml.StyleDefault, nil)
 	texture := sfml.NewTexture("test.png")
 	sprite := sfml.NewSprite(texture)
 	font := sfml.NewFont("arial.ttf")

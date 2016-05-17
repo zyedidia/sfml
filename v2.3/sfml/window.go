@@ -8,12 +8,12 @@ import (
 )
 
 const (
-	StyleNone         WindowStyle = C.sfNone
-	StyleTitlebar     WindowStyle = C.sfTitlebar
-	StyleResize       WindowStyle = C.sfResize
-	StyleClose        WindowStyle = C.sfClose
-	StyleFullscreen   WindowStyle = C.sfFullscreen
-	StyleDefaultStyle WindowStyle = C.sfDefaultStyle
+	StyleNone       WindowStyle = C.sfNone
+	StyleTitlebar   WindowStyle = C.sfTitlebar
+	StyleResize     WindowStyle = C.sfResize
+	StyleClose      WindowStyle = C.sfClose
+	StyleFullscreen WindowStyle = C.sfFullscreen
+	StyleDefault    WindowStyle = C.sfDefaultStyle
 )
 
 const (
