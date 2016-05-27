@@ -207,11 +207,11 @@ func (r *RenderWindow) DrawWithRenderStates(object Drawable, states *RenderState
 
 }
 
-func (r *RenderWindow) DrawVertexArray(object *VertexArray) {
+func (r *RenderWindow) DrawPrimitives(object *VertexArray) {
 	C.sfRenderWindow_drawVertexArray(r.data, object.data, nil)
 }
 
-func (r *RenderWindow) DrawVertexArrayWithRenderStates(object *VertexArray, states *RenderStates) {
+func (r *RenderWindow) DrawPrimitivesWithRenderStates(object *VertexArray, states *RenderStates) {
 	s := cRenderStates(states)
 	C.sfRenderWindow_drawVertexArray(r.data, object.data, &s)
 }

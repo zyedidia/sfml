@@ -104,11 +104,11 @@ func (r *RenderTexture) DrawWithRenderStates(object Drawable, states *RenderStat
 	}
 }
 
-func (r *RenderTexture) DrawVertexArray(object *VertexArray) {
+func (r *RenderTexture) DrawPrimitives(object *VertexArray) {
 	C.sfRenderTexture_drawVertexArray(r.data, object.data, nil)
 }
 
-func (r *RenderTexture) DrawVertexArrayWithRenderStates(object *VertexArray, states *RenderStates) {
+func (r *RenderTexture) DrawPrimitivesWithRenderStates(object *VertexArray, states *RenderStates) {
 	s := cRenderStates(states)
 	C.sfRenderTexture_drawVertexArray(r.data, object.data, &s)
 }
