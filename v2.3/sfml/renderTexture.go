@@ -125,6 +125,10 @@ func (r *RenderTexture) ResetGLStates() {
 	C.sfRenderTexture_resetGLStates(r.data)
 }
 
+func (r *RenderTexture) GetTexture() *Texture {
+	return &Texture{C.sfRenderTexture_getTexture(r.data)}
+}
+
 func (r *RenderTexture) SetSmooth(smooth bool) {
 	C.sfRenderTexture_setSmooth(r.data, cBool(smooth))
 }
