@@ -11,7 +11,7 @@ type RenderTexture struct {
 	data *C.sfRenderTexture
 }
 
-func destroyRenderTexture(t *Texture) {
+func destroyRenderTexture(t *RenderTexture) {
 	C.sfRenderTexture_destroy(t.data)
 }
 
