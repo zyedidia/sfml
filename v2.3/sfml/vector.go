@@ -3,6 +3,15 @@ package sfml
 //#include <SFML/Window.h>
 import "C"
 
+const epsilon float32 = 1e-6
+
+func abs(a float32) float32 {
+	if a < 0 {
+		return -a
+	}
+	return a
+}
+
 type Vector2i struct {
 	X int
 	Y int
@@ -28,17 +37,17 @@ func (v Vector2i) IsEqual(vector Vector2i) bool {
 	return v.X == vector.X && v.Y == vector.Y
 }
 
-func (v Vector2i) Multiply(vector Vector2i) Vector2i {
+func (v Vector2i) Multiply(scalar int) Vector2i {
 	return Vector2i{
-		v.X * vector.X,
-		v.Y * vector.Y,
+		v.X * scalar,
+		v.Y * scalar,
 	}
 }
 
-func (v Vector2i) Divide(vector Vector2i) Vector2i {
+func (v Vector2i) Divide(scalar int) Vector2i {
 	return Vector2i{
-		v.X / vector.X,
-		v.Y / vector.Y,
+		v.X / scalar,
+		v.Y / scalar,
 	}
 }
 
@@ -60,17 +69,17 @@ func (v Vector2u) IsEqual(vector Vector2u) bool {
 	return v.X == vector.X && v.Y == vector.Y
 }
 
-func (v Vector2u) Multiply(vector Vector2u) Vector2u {
+func (v Vector2u) Multiply(scalar uint) Vector2u {
 	return Vector2u{
-		v.X * vector.X,
-		v.Y * vector.Y,
+		v.X * scalar,
+		v.Y * scalar,
 	}
 }
 
-func (v Vector2u) Divide(vector Vector2u) Vector2u {
+func (v Vector2u) Divide(scalar uint) Vector2u {
 	return Vector2u{
-		v.X / vector.X,
-		v.Y / vector.Y,
+		v.X / scalar,
+		v.Y / scalar,
 	}
 }
 
@@ -89,20 +98,20 @@ func (v Vector2u) Subtract(vector Vector2u) Vector2u {
 }
 
 func (v Vector2f) IsEqual(vector Vector2f) bool {
-	return v.X == vector.X && v.Y == vector.Y
+	return abs(v.X-vector.X) < epsilon && abs(v.Y-vector.Y) < epsilon
 }
 
-func (v Vector2f) Multiply(vector Vector2f) Vector2f {
+func (v Vector2f) Multiply(scalar float32) Vector2f {
 	return Vector2f{
-		v.X * vector.X,
-		v.Y * vector.Y,
+		v.X * scalar,
+		v.Y * scalar,
 	}
 }
 
-func (v Vector2f) Divide(vector Vector2f) Vector2f {
+func (v Vector2f) Divide(scalar float32) Vector2f {
 	return Vector2f{
-		v.X / vector.X,
-		v.Y / vector.Y,
+		v.X / scalar,
+		v.Y / scalar,
 	}
 }
 
@@ -121,22 +130,22 @@ func (v Vector2f) Subtract(vector Vector2f) Vector2f {
 }
 
 func (v Vector3f) IsEqual(vector Vector3f) bool {
-	return v.X == vector.X && v.Y == vector.Y && v.Z == vector.Z
+	return abs(v.X-vector.X) < epsilon && abs(v.Y-vector.Y) < epsilon && abs(v.Z-vector.Z) < epsilon
 }
 
-func (v Vector3f) Multiply(vector Vector3f) Vector3f {
+func (v Vector3f) Multiply(scalar float32) Vector3f {
 	return Vector3f{
-		v.X * vector.X,
-		v.Y * vector.Y,
-		v.Z * vector.Z,
+		v.X * scalar,
+		v.Y * scalar,
+		v.Z * scalar,
 	}
 }
 
-func (v Vector3f) Divide(vector Vector3f) Vector3f {
+func (v Vector3f) Divide(scalar float32) Vector3f {
 	return Vector3f{
-		v.X / vector.X,
-		v.Y / vector.Y,
-		v.Z / vector.Z,
+		v.X / scalar,
+		v.Y / scalar,
+		v.Z / scalar,
 	}
 }
 
