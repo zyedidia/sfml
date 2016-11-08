@@ -70,38 +70,11 @@ func (r *RenderTexture) MapCoordsToPixel(point Vector2f, view *View) Vector2i {
 }
 
 func (r *RenderTexture) Draw(object Drawable) {
-	switch object.(type) {
-	case *Sprite:
-		C.sfRenderTexture_drawSprite(r.data, object.(*Sprite).data, nil)
-	case *Text:
-		C.sfRenderTexture_drawText(r.data, object.(*Text).data, nil)
-	/*case *Shape:
-	C.sfRenderTexture_drawShape(r.data, object.(*Shape).data, nil)*/
-	case *CircleShape:
-		C.sfRenderTexture_drawCircleShape(r.data, object.(*CircleShape).data, nil)
-	case *ConvexShape:
-		C.sfRenderTexture_drawConvexShape(r.data, object.(*ConvexShape).data, nil)
-	case *RectangleShape:
-		C.sfRenderTexture_drawRectangleShape(r.data, object.(*RectangleShape).data, nil)
-	}
+	object.Draw(r)
 }
 
 func (r *RenderTexture) DrawWithRenderStates(object Drawable, states *RenderStates) {
-	s := cRenderStates(states)
-	switch object.(type) {
-	case *Sprite:
-		C.sfRenderTexture_drawSprite(r.data, object.(*Sprite).data, &s)
-	case *Text:
-		C.sfRenderTexture_drawText(r.data, object.(*Text).data, &s)
-	/*case *Shape:
-	C.sfRenderTexture_drawShape(r.data, object.(*Shape).data, &s)*/
-	case *CircleShape:
-		C.sfRenderTexture_drawCircleShape(r.data, object.(*CircleShape).data, &s)
-	case *ConvexShape:
-		C.sfRenderTexture_drawConvexShape(r.data, object.(*ConvexShape).data, &s)
-	case *RectangleShape:
-		C.sfRenderTexture_drawRectangleShape(r.data, object.(*RectangleShape).data, &s)
-	}
+	object.DrawWithRenderStates(r, states)
 }
 
 func (r *RenderTexture) DrawPrimitives(object *VertexArray) {

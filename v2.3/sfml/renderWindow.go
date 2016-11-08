@@ -172,39 +172,11 @@ func (r *RenderWindow) MapCoordsToPixel(point Vector2f, view *View) Vector2i {
 }
 
 func (r *RenderWindow) Draw(object Drawable) {
-	switch object.(type) {
-	case *Sprite:
-		C.sfRenderWindow_drawSprite(r.data, object.(*Sprite).data, nil)
-	case *Text:
-		C.sfRenderWindow_drawText(r.data, object.(*Text).data, nil)
-	/*case *Shape:
-	C.sfRenderWindow_drawShape(r.data, object.(*Shape).data, nil)*/
-	case *CircleShape:
-		C.sfRenderWindow_drawCircleShape(r.data, object.(*CircleShape).data, nil)
-	case *ConvexShape:
-		C.sfRenderWindow_drawConvexShape(r.data, object.(*ConvexShape).data, nil)
-	case *RectangleShape:
-		C.sfRenderWindow_drawRectangleShape(r.data, object.(*RectangleShape).data, nil)
-	}
+	object.Draw(r)
 }
 
 func (r *RenderWindow) DrawWithRenderStates(object Drawable, states *RenderStates) {
-	s := cRenderStates(states)
-	switch object.(type) {
-	case *Sprite:
-		C.sfRenderWindow_drawSprite(r.data, object.(*Sprite).data, &s)
-	case *Text:
-		C.sfRenderWindow_drawText(r.data, object.(*Text).data, &s)
-	/*case *Shape:
-	C.sfRenderWindow_drawShape(r.data, object.(*Shape).data, &s)*/
-	case *CircleShape:
-		C.sfRenderWindow_drawCircleShape(r.data, object.(*CircleShape).data, &s)
-	case *ConvexShape:
-		C.sfRenderWindow_drawConvexShape(r.data, object.(*ConvexShape).data, &s)
-	case *RectangleShape:
-		C.sfRenderWindow_drawRectangleShape(r.data, object.(*RectangleShape).data, &s)
-	}
-
+	object.DrawWithRenderStates(r, states)
 }
 
 func (r *RenderWindow) DrawPrimitives(object *VertexArray) {
