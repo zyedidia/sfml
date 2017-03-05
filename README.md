@@ -32,7 +32,7 @@ Example
 package main
 
 import (
-    "gitlab.com/tapir/sfml/v2.3/sfml"
+    "github.com/zyedidia/sfml/v2.3/sfml""
     "runtime"
 )
 
