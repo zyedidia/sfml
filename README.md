@@ -15,7 +15,7 @@ Installation
 ---------------
 * Make sure you have a working ***gcc*** environment and that it's in your ***PATH***.
 * Copy SFML and CSFML libraries and include files to appropriate places.
-* Run `go get gitlab.com/tapir/sfml/v2.3/sfml`
+* Run `go get github.com/zyedidia/sfml/v2.3/sfml`
 
 Status
 ---------
@@ -32,7 +32,7 @@ Example
 package main
 
 import (
-    "github.com/zyedidia/sfml/v2.3/sfml""
+    "github.com/zyedidia/sfml/v2.3/sfml"
     "runtime"
 )
 
