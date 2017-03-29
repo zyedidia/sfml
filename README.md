@@ -37,29 +37,29 @@ import (
 )
 
 func init() {
-	runtime.LockOSThread()
+    runtime.LockOSThread()
 }
 
 func main() {
-	window := sfml.NewRenderWindow(sfml.VideoMode{800, 600, 32}, "Test", sfml.StyleDefault, nil)
-	texture := sfml.NewTexture("test.png")
-	sprite := sfml.NewSprite(texture)
-	font := sfml.NewFont("arial.ttf")
-	text := sfml.NewText("Hello SFML", font, 50)
+    window := sfml.NewRenderWindow(sfml.VideoMode{800, 600, 32}, "Test", sfml.StyleDefault, nil)
+    texture := sfml.NewTexture("test.png")
+    sprite := sfml.NewSprite(texture)
+    font := sfml.NewFont("arial.ttf")
+    text := sfml.NewText("Hello SFML", font, 50)
     music := sfml.NewMusic("test.ogg")
     music.Play()
 
-	for window.IsOpen() {
-		if event := window.PollEvent(); event != nil {
-			switch event.Type {
-			case sfml.EventClosed:
-				window.Close()
-			}
-		}
-		window.Clear(sfml.ColorBlack)
-		window.Draw(sprite)
-		window.Draw(text)
-		window.Display()
-	}
+    for window.IsOpen() {
+        if event := window.PollEvent(); event != nil {
+            switch event.Type {
+            case sfml.EventClosed:
+                window.Close()
+            }
+        }
+        window.Clear(sfml.ColorBlack)
+        window.Draw(sprite)
+        window.Draw(text)
+        window.Display()
+    }
 }
 ```

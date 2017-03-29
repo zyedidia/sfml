@@ -1,4 +1,4 @@
 package sfml
 
-//#cgo LDFLAGS: -lcsfml-window -lcsfml-graphics -lcsfml-audio
+//#cgo LDFLAGS: -I/usr/local/include -L/usr/local/lib -lcsfml-window -lcsfml-graphics -lcsfml-audio
 import "C"
